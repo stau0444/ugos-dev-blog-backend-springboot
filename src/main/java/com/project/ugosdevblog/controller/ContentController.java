@@ -1,13 +1,16 @@
 package com.project.ugosdevblog.controller;
 
-import com.project.ugosdevblog.dto.ContentListResp;
 import com.project.ugosdevblog.dto.ContentResp;
-import com.project.ugosdevblog.dto.PostContentReq;
+import com.project.ugosdevblog.dto.ContentReq;
+import com.project.ugosdevblog.dto.SearchListResp;
 import com.project.ugosdevblog.entity.Content;
 import com.project.ugosdevblog.entity.Tag;
 import com.project.ugosdevblog.repository.ContentRepository;
-import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.project.ugosdevblog.repository.TagRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,15 +28,19 @@ import java.util.stream.Collectors;
 public class ContentController {
 
     private final ContentRepository contentRepository;
-
+    private final TagRepository tagRepository;
     @GetMapping("/")
     public String home(){
         return "home";
     }
     @GetMapping("/test")
     public String Test(){
-        System.out.println("테스트 요청 ");
         return "test 요청 응답 데이터";
+    }
+
+    @GetMapping("/content/search")
+    public Page<SearchListResp> getSearchList(@RequestParam String keyword, Pageable pageable){
+        return contentRepository.search(keyword,pageable);
     }
 
     @GetMapping("/content/{id}")
@@ -53,11 +60,10 @@ public class ContentController {
     }
 
     @GetMapping("/contents")
-    public ContentListResp getContents(@RequestParam String category ,@RequestParam  Integer page ){
-        List<Content> contentList = contentRepository.findAll();
-
-        System.out.println("category " + category + "page " + page);
-        List<ContentResp> data = contentList
+    public Page<ContentResp> getContents(@RequestParam String category ,Pageable pageable ){
+        Page<Content> contentList = contentRepository.findAll(pageable);
+        List<Content> result = contentList.getContent();
+        List<ContentResp> data = result
                 .stream()
                 .map(content ->
                         ContentResp.builder()
@@ -70,22 +76,27 @@ public class ContentController {
                                 .title(content.getTitle())
                                 .build()
                 ).collect(Collectors.toList());
-
-        return ContentListResp.builder()
-                .data(data)
-                .page(page)
-                .totalCount(40)
-                .build();
+        long total = contentList.getTotalElements();
+        return new PageImpl<>(data,pageable,total);
 
     }
 
     @PostMapping("/content")
-    public void addContent(@RequestBody PostContentReq content){
+    public void addContent(@RequestBody ContentReq content){
+
+        List<String> tags = content.getTags();
+
+        List<Tag> searchedTags = tags.stream().map((tag) ->
+                tagRepository.findByTagName(tag)
+        ).collect(Collectors.toList());
+
+        System.out.println("tags" + searchedTags);
 
         Content newContent = Content.builder()
                 .title(content.getTitle())
                 .imageUrl(content.getImageUrl())
                 .createdAt(LocalDateTime.now())
+                .tags(searchedTags)
                 .description(content.getDescription())
                 .article(content.getArticle())
                 .build();
@@ -95,9 +106,7 @@ public class ContentController {
     }
 
     @PutMapping("/content/{id}")
-    public void updateContent(@PathVariable Long id,@RequestBody PostContentReq reqData){
-
-        System.out.println("reqdata:"+reqData);
+    public void updateContent(@PathVariable Long id,@RequestBody ContentReq reqData){
         Optional<Content> contentOp = contentRepository.findById(id);
 
         Content content = contentOp.orElseThrow();
@@ -112,7 +121,5 @@ public class ContentController {
     @DeleteMapping("content/{id}")
     public void deleteContent(@PathVariable Long id){
         contentRepository.deleteById(id);
-
-        new JPAQueryFactory().selectFrom()
     }
 }

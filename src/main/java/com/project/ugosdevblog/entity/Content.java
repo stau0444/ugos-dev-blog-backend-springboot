@@ -10,7 +10,7 @@ import java.util.List;
 @Getter
 @Setter
 @Builder
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 public class Content {
 
@@ -25,7 +25,7 @@ public class Content {
     @Lob
     private String description;
 
-    @OneToMany
+    @OneToMany(mappedBy = "content")
     private List<Tag> tags;
 
     @Lob
