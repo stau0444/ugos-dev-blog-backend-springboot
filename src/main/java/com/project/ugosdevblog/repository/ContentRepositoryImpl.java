@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 
 
 import java.util.List;
+import java.util.Locale;
 
 import static com.project.ugosdevblog.entity.QContent.content;
 
@@ -32,7 +33,9 @@ public class ContentRepositoryImpl implements  ContentRepositoryCustom{
                 .where(
                         content.title
                                 .contains(keyword)
+                                .or(content.title.contains(keyword.toUpperCase()))
                                 .or(content.description.contains(keyword))
+                                .or(content.description.contains(keyword.toUpperCase()))
 
                 )
                 .offset(pageable.getOffset())
