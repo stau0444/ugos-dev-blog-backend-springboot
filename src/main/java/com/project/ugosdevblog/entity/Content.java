@@ -25,16 +25,14 @@ public class Content {
     @Lob
     private String description;
 
-    @OneToMany(mappedBy = "content")
+    @ManyToMany
     private List<Tag> tags;
 
     @Lob
     private String imageUrl;
 
-    @DateTimeFormat(pattern="yyyy.MM.dd")
     private LocalDateTime createdAt;
 
-    @DateTimeFormat(pattern="yyyy.MM.dd")
     private LocalDateTime updatedAt;
 
 }

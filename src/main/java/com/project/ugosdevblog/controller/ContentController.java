@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -54,14 +53,23 @@ public class ContentController {
                 .createdAt(DateTimeFormatter.ISO_LOCAL_DATE.format(content.getCreatedAt()))
                 .imageUrl(content.getImageUrl())
                 .title(content.getTitle())
-                .tags(new ArrayList<>())
+                .tags(
+                        content.getTags()
+                                .stream()
+                                .map(tag -> tag.getTagName())
+                                .collect(Collectors.toList()))
                 .description(content.getDescription())
                 .build();
     }
 
     @GetMapping("/contents")
-    public Page<ContentResp> getContents(@RequestParam String category ,Pageable pageable ){
-        Page<Content> contentList = contentRepository.findAll(pageable);
+    public Page<ContentResp> getContents(@RequestParam(defaultValue = "") String category  ,Pageable pageable ){
+        Page<Content> contentList = null;
+        if(category.equals("")){
+            contentList = contentRepository.findAll(pageable);
+        }else{
+            contentList = contentRepository.findByTags(category,pageable);
+        }
         List<Content> result = contentList.getContent();
         List<ContentResp> data = result
                 .stream()
@@ -72,7 +80,11 @@ public class ContentController {
                                 .description(content.getDescription())
                                 .id(content.getContentId())
                                 .imageUrl(content.getImageUrl())
-                                .tags(new ArrayList<>())
+                                .tags(
+                                        content.getTags()
+                                                .stream()
+                                                .map(tag -> tag.getTagName())
+                                                .collect(Collectors.toList()))
                                 .title(content.getTitle())
                                 .build()
                 ).collect(Collectors.toList());
@@ -80,6 +92,7 @@ public class ContentController {
         return new PageImpl<>(data,pageable,total);
 
     }
+
 
     @PostMapping("/content")
     public void addContent(@RequestBody ContentReq content){
@@ -89,8 +102,6 @@ public class ContentController {
         List<Tag> searchedTags = tags.stream().map((tag) ->
                 tagRepository.findByTagName(tag)
         ).collect(Collectors.toList());
-
-        System.out.println("tags" + searchedTags);
 
         Content newContent = Content.builder()
                 .title(content.getTitle())
@@ -108,12 +119,16 @@ public class ContentController {
     @PutMapping("/content/{id}")
     public void updateContent(@PathVariable Long id,@RequestBody ContentReq reqData){
         Optional<Content> contentOp = contentRepository.findById(id);
-
-        Content content = contentOp.orElseThrow();
+        System.out.println("contentID = "  + id);
+        List<Tag> selectedTags = reqData.getTags().stream().map(
+                tag -> tagRepository.findByTagName(tag)
+        ).collect(Collectors.toList());
+        Content content = contentOp.orElseThrow(()->new RuntimeException("아이디 잘못됨"));
 
         content.setArticle(reqData.getArticle());
         content.setDescription(reqData.getDescription());
         content.setImageUrl(reqData.getImageUrl());
+        content.setTags(selectedTags);
         content.setTitle(reqData.getTitle());
         content.setUpdatedAt(LocalDateTime.now());
     }

@@ -19,5 +19,5 @@ public class ContentResp {
     private String imageUrl;
     private String article;
     private String description;
-    private List<Tag> tags = new ArrayList();
+    private List<String> tags = new ArrayList();
 }

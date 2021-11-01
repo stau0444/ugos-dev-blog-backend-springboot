@@ -2,7 +2,11 @@ package com.project.ugosdevblog.repository;
 
 import com.project.ugosdevblog.dto.QSearchListResp;
 import com.project.ugosdevblog.dto.SearchListResp;
+import com.project.ugosdevblog.entity.Content;
+import com.project.ugosdevblog.entity.QTag;
+import com.project.ugosdevblog.entity.Tag;
 import com.querydsl.core.QueryResults;
+import com.querydsl.jpa.JPQLQuery;
 import com.querydsl.jpa.JPQLQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -14,6 +18,7 @@ import java.util.List;
 import java.util.Locale;
 
 import static com.project.ugosdevblog.entity.QContent.content;
+import static com.project.ugosdevblog.entity.QTag.tag;
 
 @RequiredArgsConstructor
 public class ContentRepositoryImpl implements  ContentRepositoryCustom{
@@ -46,6 +51,20 @@ public class ContentRepositoryImpl implements  ContentRepositoryCustom{
 
 
         return new PageImpl<>(searchList,pageable,totalCount);
+    }
+
+    @Override
+    public Page<Content> findByTags(String category, Pageable pageable) {
+        Tag selectedTag = queryFactory.select(tag).from(tag).where(tag.tagName.eq(category)).fetchOne();
+
+        QueryResults<Content> contentsByTag = queryFactory.select(content)
+                .from(content)
+                .where(content.tags.contains(selectedTag))
+                .fetchResults();
+        List<Content> results = contentsByTag.getResults();
+        long totalCount = contentsByTag.getTotal();
+
+        return new PageImpl<>(results,pageable,totalCount);
     }
 
 }
