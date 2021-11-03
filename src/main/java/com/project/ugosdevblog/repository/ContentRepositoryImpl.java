@@ -3,10 +3,8 @@ package com.project.ugosdevblog.repository;
 import com.project.ugosdevblog.dto.QSearchListResp;
 import com.project.ugosdevblog.dto.SearchListResp;
 import com.project.ugosdevblog.entity.Content;
-import com.project.ugosdevblog.entity.QTag;
 import com.project.ugosdevblog.entity.Tag;
 import com.querydsl.core.QueryResults;
-import com.querydsl.jpa.JPQLQuery;
 import com.querydsl.jpa.JPQLQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -15,7 +13,6 @@ import org.springframework.data.domain.Pageable;
 
 
 import java.util.List;
-import java.util.Locale;
 
 import static com.project.ugosdevblog.entity.QContent.content;
 import static com.project.ugosdevblog.entity.QTag.tag;

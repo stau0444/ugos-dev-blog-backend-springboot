@@ -119,7 +119,6 @@ public class ContentController {
     @PutMapping("/content/{id}")
     public void updateContent(@PathVariable Long id,@RequestBody ContentReq reqData){
         Optional<Content> contentOp = contentRepository.findById(id);
-        System.out.println("contentID = "  + id);
         List<Tag> selectedTags = reqData.getTags().stream().map(
                 tag -> tagRepository.findByTagName(tag)
         ).collect(Collectors.toList());

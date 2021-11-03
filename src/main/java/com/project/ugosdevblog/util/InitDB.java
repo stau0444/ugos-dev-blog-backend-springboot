@@ -2,8 +2,10 @@ package com.project.ugosdevblog.util;
 
 import com.project.ugosdevblog.entity.Content;
 import com.project.ugosdevblog.entity.Tag;
+import com.project.ugosdevblog.entity.User;
 import com.project.ugosdevblog.repository.ContentRepository;
 import com.project.ugosdevblog.repository.TagRepository;
+import com.project.ugosdevblog.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,8 +31,19 @@ public class InitDB {
 
         private final ContentRepository repository;
         private final TagRepository tagRepository;
+        private final UserRepository userRepository;
+
+
         @Transactional
         public void init(){
+            User user = User.builder()
+                    .username("ugo")
+                    .email("ugo@ugo.com")
+                    .password("asdasd1")
+                    .username("황우고")
+                    .build();
+            userRepository.save(user);
+
             Tag tag1 = Tag.builder()
                     .tagName("JAVA")
                     .build();
