@@ -5,6 +5,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Set;
 
 @Data
@@ -30,7 +31,7 @@ public class User implements UserDetails {
 
     @OneToMany(fetch = FetchType.EAGER , cascade = CascadeType.ALL)
     @JoinColumn(name="user_id")
-    private Set<UserAuthority> authorities;
+    private HashSet<UserAuthority> authorities;
 
     private boolean emailSubscribe;
 
