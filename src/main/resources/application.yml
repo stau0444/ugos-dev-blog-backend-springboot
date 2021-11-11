@@ -1,6 +1,5 @@
 server:
   port: 9050
-
 spring:
   jpa:
     hibernate:

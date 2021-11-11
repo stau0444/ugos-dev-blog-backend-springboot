@@ -6,7 +6,9 @@ import com.project.ugosdevblog.entity.User;
 import com.project.ugosdevblog.repository.ContentRepository;
 import com.project.ugosdevblog.repository.TagRepository;
 import com.project.ugosdevblog.repository.UserRepository;
+import com.project.ugosdevblog.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,18 +34,22 @@ public class InitDB {
         private final ContentRepository repository;
         private final TagRepository tagRepository;
         private final UserRepository userRepository;
+        private final PasswordEncoder encoder;
+        private final UserService userService;
 
 
         @Transactional
         public void init(){
-            User user = User.builder()
-                    .username("ugo")
-                    .email("ugo@ugo.com")
-                    .password("asdasd1")
-                    .username("황우고")
-                    .build();
-            userRepository.save(user);
 
+            User user = User.builder()
+                    .username("stau04")
+                    .enabled(true)
+                    .signUpAt(LocalDateTime.now())
+                    .email("ugo@ugo.com")
+                    .password(encoder.encode("asdasd12!"))
+                    .build();
+
+            userService.saveUser(user);
             Tag tag1 = Tag.builder()
                     .tagName("JAVA")
                     .build();

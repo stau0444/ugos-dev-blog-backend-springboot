@@ -5,12 +5,12 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.project.ugosdevblog.dto.TokenVerifyResult;
 import com.project.ugosdevblog.entity.User;
-
 import java.time.Instant;
+
 
 public class JWTHelper {
     private static final Algorithm ALGORITHM = Algorithm.HMAC256("ugosdevblog");
-    private static long AUTH_TIME = 20 * 60 ;
+    private static long AUTH_TIME = 1 * 60 ;
     private static long REFRESH_TIME = 60*60*24;
 
     public static String createAuthToken(User user){
