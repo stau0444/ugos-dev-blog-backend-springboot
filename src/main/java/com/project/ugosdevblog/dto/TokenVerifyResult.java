@@ -12,4 +12,5 @@ import lombok.NoArgsConstructor;
 public class TokenVerifyResult {
     private boolean success;
     private String username;
+    private TokenFail fail;
 }

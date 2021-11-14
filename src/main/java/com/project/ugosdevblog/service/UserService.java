@@ -1,7 +1,5 @@
 package com.project.ugosdevblog.service;
 
-import com.project.ugosdevblog.dto.LoginReq;
-import com.project.ugosdevblog.dto.UserPostReq;
 import com.project.ugosdevblog.entity.User;
 import com.project.ugosdevblog.entity.UserAuthority;
 import com.project.ugosdevblog.repository.AuthRepository;
@@ -10,11 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,10 +24,7 @@ public class UserService implements UserDetailsService {
     public boolean CheckDuplication(String userId){
         Optional<User> byUserId = userRepository.findByUsername(userId);
         boolean isExistId = byUserId.isPresent();
-        if(isExistId){
-            return true;
-        }
-        return false;
+        return isExistId;
     }
     public void saveUser(User user){
 

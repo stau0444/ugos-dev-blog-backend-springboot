@@ -3,6 +3,7 @@ package com.project.ugosdevblog.config;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project.ugosdevblog.filter.JWTCheckFilter;
 import com.project.ugosdevblog.filter.JWTLoginFilter;
+import com.project.ugosdevblog.repository.TokenRepository;
 import com.project.ugosdevblog.service.TokenService;
 import com.project.ugosdevblog.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -18,11 +19,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
-@EnableWebSecurity(debug = true)
+@EnableWebSecurity(debug = false)
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @RequiredArgsConstructor
 public class SecurityConfig  extends WebSecurityConfigurerAdapter {
 
+    private final ObjectMapper objectMapper;
     private final UserService userService;
     private final TokenService tokenService;
     private final CustomAuthEntryPoint authEntryPoint;
@@ -34,8 +36,8 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        JWTCheckFilter checkFilter = new JWTCheckFilter(authenticationManager(),userService,authEntryPoint);
-        JWTLoginFilter loginFilter = new JWTLoginFilter(authenticationManager(),userService,tokenService);
+        JWTCheckFilter checkFilter = new JWTCheckFilter(authenticationManager(),userService,authEntryPoint,tokenService,objectMapper);
+        JWTLoginFilter loginFilter = new JWTLoginFilter(authenticationManager(),userService,tokenService,objectMapper);
 
         http.
                 csrf().disable()

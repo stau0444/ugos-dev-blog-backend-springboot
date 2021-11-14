@@ -10,41 +10,46 @@ import com.project.ugosdevblog.entity.Token;
 import com.project.ugosdevblog.entity.User;
 import com.project.ugosdevblog.service.TokenService;
 import com.project.ugosdevblog.service.UserService;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.OutputStream;
 
 public class JWTLoginFilter extends UsernamePasswordAuthenticationFilter {
 
-    private ObjectMapper objectMapper = new ObjectMapper();
-    private UserService userService;
-    private TokenService tokenService;
+    private final ObjectMapper objectMapper;
+    private final UserService userService;
+    private final TokenService tokenService;
 
-    public JWTLoginFilter(AuthenticationManager authenticationManager , UserService userService, TokenService tokenService){
+    public JWTLoginFilter(
+            AuthenticationManager authenticationManager ,
+                          UserService userService,
+                          TokenService tokenService,
+                          ObjectMapper objectMapper
+    ){
         super(authenticationManager);
         this.userService = userService;
         this.tokenService = tokenService;
+        this.objectMapper = objectMapper;
         setFilterProcessesUrl("/api/user/login");
     }
 
     @Override
-    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
+    public Authentication attemptAuthentication(
+            HttpServletRequest request,
+            HttpServletResponse response
+    ) throws AuthenticationException {
         LoginReq loginReq = null;
-        String refresh_token = request.getHeader("refresh_token");
+        String refresh_token = request.getHeader(HttpHeaders.AUTHORIZATION);
 
         if(refresh_token == null){
             try {
@@ -57,7 +62,8 @@ public class JWTLoginFilter extends UsernamePasswordAuthenticationFilter {
             );
             return getAuthenticationManager().authenticate(token);
         }else{
-            String refreshToken = refresh_token.substring("Bearer".length());
+            String refreshToken = refresh_token.substring("Bearer ".length());
+            System.out.println("refreshToken = " + refreshToken);
             TokenVerifyResult result = JWTHelper.verify(refreshToken);
             //DB에서 토큰 체크
             tokenService.findToken(result.getUsername(),refreshToken).orElseThrow(
@@ -79,10 +85,15 @@ public class JWTLoginFilter extends UsernamePasswordAuthenticationFilter {
 
 
     @Override
-    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
+    protected void successfulAuthentication(
+            HttpServletRequest request,
+            HttpServletResponse response,
+            FilterChain chain,
+            Authentication authResult
+    ) throws IOException, ServletException {
         User user = (User) authResult.getPrincipal();
         String refreshToken = JWTHelper.createRefreshToken(user);
-
+        System.out.println("리프레시 토큰 생성 ="+ refreshToken);
         response.setHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
         response.setHeader("auth_token", JWTHelper.createAuthToken(user));
         response.setHeader("refresh_token" , refreshToken);
