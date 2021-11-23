@@ -5,14 +5,13 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class UserPostReq {
-    private String userId;
-    private String password;
+public class UpdateUserReq {
+    private String username;
     private String email;
-    private String profile;
+    private boolean emailSubscribe;
+    private String profileUrl;
 }

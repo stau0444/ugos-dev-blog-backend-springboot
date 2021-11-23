@@ -52,15 +52,16 @@ public class ContentRepositoryImpl implements  ContentRepositoryCustom{
 
     @Override
     public Page<Content> findByTags(String category, Pageable pageable) {
-        Tag selectedTag = queryFactory.select(tag).from(tag).where(tag.tagName.eq(category)).fetchOne();
+        Tag selectedTag = queryFactory.selectFrom(tag).where(tag.tagName.eq(category)).fetchOne();
 
-        QueryResults<Content> contentsByTag = queryFactory.select(content)
+        QueryResults<Content> contentsByTag = queryFactory
+                .selectDistinct(content)
                 .from(content)
                 .where(content.tags.contains(selectedTag))
                 .fetchResults();
+
         List<Content> results = contentsByTag.getResults();
         long totalCount = contentsByTag.getTotal();
-
         return new PageImpl<>(results,pageable,totalCount);
     }
 

@@ -8,11 +8,11 @@ import com.project.ugosdevblog.service.TokenService;
 import com.project.ugosdevblog.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.annotation.web.configurers.ExceptionHandlingConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -27,7 +27,7 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
     private final ObjectMapper objectMapper;
     private final UserService userService;
     private final TokenService tokenService;
-    private final CustomAuthEntryPoint authEntryPoint;
+    private final CustomExceptionHandler exceptionHandler;
 
     @Bean
     public CustomAuthEntryPoint authenticationEntryPoint() {
@@ -36,19 +36,17 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        JWTCheckFilter checkFilter = new JWTCheckFilter(authenticationManager(),userService,authEntryPoint,tokenService,objectMapper);
-        JWTLoginFilter loginFilter = new JWTLoginFilter(authenticationManager(),userService,tokenService,objectMapper);
-
-        http.
-                csrf().disable()
-                .authorizeRequests()
-                .antMatchers("/api/user/test").authenticated()
-                .anyRequest().permitAll()
-                .and()
+        JWTCheckFilter checkFilter = new JWTCheckFilter(authenticationManager(),userService);
+        JWTLoginFilter loginFilter = new JWTLoginFilter(authenticationManager(),userService,tokenService,objectMapper,exceptionHandler);
+        http.authorizeRequests(request->{
+            request.antMatchers(HttpMethod.PUT,"/api/content").hasAuthority("ROLE_ADMIN");
+            request.antMatchers(HttpMethod.POST,"/api/content").hasAuthority("ROLE_ADMIN");
+            request.anyRequest().permitAll();
+        })
+                .csrf().disable()
                 .sessionManagement(session -> {
                     session.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
                 })
-
                 .addFilterAt(loginFilter , UsernamePasswordAuthenticationFilter.class)
                 .addFilterAt(checkFilter , BasicAuthenticationFilter.class)
                 ;

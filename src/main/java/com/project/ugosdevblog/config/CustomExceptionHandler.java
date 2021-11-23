@@ -1,20 +1,25 @@
 package com.project.ugosdevblog.config;
 
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class CustomExceptionHandler implements AccessDeniedHandler {
+@Component
+public class CustomExceptionHandler implements AuthenticationFailureHandler {
+
     @Override
-    public void handle(
+    public void onAuthenticationFailure(
             HttpServletRequest request,
             HttpServletResponse response,
-            AccessDeniedException accessDeniedException
+            AuthenticationException exception
     ) throws IOException, ServletException {
-        System.out.println("accessDeniedException"+accessDeniedException);
+        response.sendError(401,exception.getMessage());
     }
 }

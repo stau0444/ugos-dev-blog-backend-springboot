@@ -4,10 +4,14 @@ import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.net.HttpHeaders;
 import com.project.ugosdevblog.Helper.JWTHelper;
+import com.project.ugosdevblog.config.CustomExceptionHandler;
 import com.project.ugosdevblog.dto.LoginReq;
+import com.project.ugosdevblog.dto.LoginStateResp;
+import com.project.ugosdevblog.dto.LoginUserInfo;
 import com.project.ugosdevblog.dto.TokenVerifyResult;
 import com.project.ugosdevblog.entity.Token;
 import com.project.ugosdevblog.entity.User;
+import com.project.ugosdevblog.exception.NotValidTokenException;
 import com.project.ugosdevblog.service.TokenService;
 import com.project.ugosdevblog.service.UserService;
 import org.springframework.http.MediaType;
@@ -23,24 +27,28 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.time.format.DateTimeFormatter;
 
 public class JWTLoginFilter extends UsernamePasswordAuthenticationFilter {
 
     private final ObjectMapper objectMapper;
     private final UserService userService;
     private final TokenService tokenService;
-
+    private final CustomExceptionHandler exceptionHandler;
     public JWTLoginFilter(
             AuthenticationManager authenticationManager ,
                           UserService userService,
                           TokenService tokenService,
-                          ObjectMapper objectMapper
+                          ObjectMapper objectMapper,
+                          CustomExceptionHandler exceptionHandler
     ){
         super(authenticationManager);
         this.userService = userService;
         this.tokenService = tokenService;
         this.objectMapper = objectMapper;
+        this.exceptionHandler = exceptionHandler;
         setFilterProcessesUrl("/api/user/login");
+        setAuthenticationFailureHandler(exceptionHandler);
     }
 
     @Override
@@ -51,6 +59,7 @@ public class JWTLoginFilter extends UsernamePasswordAuthenticationFilter {
         LoginReq loginReq = null;
         String refresh_token = request.getHeader(HttpHeaders.AUTHORIZATION);
 
+        //로그인 폼을 통한 로그인
         if(refresh_token == null){
             try {
                 loginReq = objectMapper.readValue(request.getInputStream(),LoginReq.class);
@@ -62,10 +71,9 @@ public class JWTLoginFilter extends UsernamePasswordAuthenticationFilter {
             );
             return getAuthenticationManager().authenticate(token);
         }else{
+        //리프레쉬 토큰을 통한 로그인
             String refreshToken = refresh_token.substring("Bearer ".length());
-            System.out.println("refreshToken = " + refreshToken);
             TokenVerifyResult result = JWTHelper.verify(refreshToken);
-            //DB에서 토큰 체크
             tokenService.findToken(result.getUsername(),refreshToken).orElseThrow(
                     ()->{
                         tokenService.deleteAll(result.getUsername());
@@ -76,11 +84,9 @@ public class JWTLoginFilter extends UsernamePasswordAuthenticationFilter {
                 User user = (User) userService.loadUserByUsername(result.getUsername());
                 return new UsernamePasswordAuthenticationToken(user,user.getAuthorities());
             }else{
-                throw new TokenExpiredException("토큰이 만료되었습니다 다시 로그인 해주세요");
+                throw new NotValidTokenException("REFRESH_TOKEN_EXPIRED");
             }
         }
-
-
     }
 
 
@@ -93,12 +99,24 @@ public class JWTLoginFilter extends UsernamePasswordAuthenticationFilter {
     ) throws IOException, ServletException {
         User user = (User) authResult.getPrincipal();
         String refreshToken = JWTHelper.createRefreshToken(user);
-        System.out.println("리프레시 토큰 생성 ="+ refreshToken);
+
         response.setHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
         response.setHeader("auth_token", JWTHelper.createAuthToken(user));
         response.setHeader("refresh_token" , refreshToken);
 
-        response.getOutputStream().write(objectMapper.writeValueAsBytes(user));
+        response.getOutputStream().write(objectMapper.writeValueAsBytes(
+                LoginStateResp.builder()
+                        .isLogin(true)
+                        .userInfo(LoginUserInfo.builder()
+                                .email(user.getEmail())
+                                .id(user.getId())
+                                .profileUrl(user.getProfileUrl())
+                                .emailSubscribe(user.isEmailSubscribe())
+                                .username(user.getUsername())
+                                .signUpAt(DateTimeFormatter.ISO_LOCAL_DATE.format(user.getSignUpAt()))
+                                .build())
+                        .build()
+        ));
         //DB에 토큰 저장
         tokenService.saveToken(
                 Token.builder()

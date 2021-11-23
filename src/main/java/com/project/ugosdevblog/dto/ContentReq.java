@@ -19,4 +19,6 @@ public class ContentReq {
     private List<String> tags;
 
     private String imageUrl;
+
+    private Long userId;
 }

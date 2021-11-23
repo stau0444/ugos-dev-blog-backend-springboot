@@ -5,6 +5,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -30,9 +31,16 @@ public class User implements UserDetails {
 
     private LocalDateTime signUpAt;
 
-    @OneToMany(fetch = FetchType.EAGER , cascade = CascadeType.ALL)
-    @JoinColumn(name="user_id")
-    private List<UserAuthority> authorities;
+    private LocalDateTime updateAt;
+
+    private String profileUrl;
+
+    @OneToMany(fetch = FetchType.LAZY , cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id",foreignKey = @ForeignKey(name = "user_id"))
+    private Set<UserAuthority> authorities = new HashSet<>();
+
+    @OneToMany(fetch = FetchType.LAZY , cascade = CascadeType.ALL)
+    private List<Content> contents = new ArrayList<>();
 
     private boolean emailSubscribe;
 

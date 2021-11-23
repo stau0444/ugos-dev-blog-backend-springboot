@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.PostConstruct;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 @Component
 @RequiredArgsConstructor
@@ -86,7 +87,8 @@ public class InitDB {
                     .imageUrl("/IMG_1708.JPG")
                     .article("<p>asdddd</p>")
                     .createdAt(LocalDateTime.now())
-                    .tags(List.of(tag1))
+                    .tags(Set.of(tag1))
+                    .user(user)
                     .description("아파치 소프트웨어 재단에서 개발하는 java 기반 프로젝트의 라이프사이클 관리를 위한 빌드 도구. 이에 따라 컴파일과" +
                             " 빌드를 동시에 수행, 테스트를 병행하거나 서버 측 Deploy 자원을 관리할 수 있는 환경을 제공한다. 또한 라이브러리 " +
                             " 관리 기능도 내포하고 있다. Java로 개발하다 보면 다양한 라이브러리를 필요로 하게 되는데, settings.xml 또는 " +
@@ -96,8 +98,9 @@ public class InitDB {
                     .title("메이븐이란 무엇인가?")
                     .imageUrl("/IMG_1708.JPG")
                     .article("<p>asdddd</p>")
-                    .tags(List.of(tag1))
+                    .tags(Set.of(tag1))
                     .createdAt(LocalDateTime.now())
+                    .user(user)
                     .description("아파치 소프트웨어 재단에서 개발하는 java 기반 프로젝트의 라이프사이클 관리를 위한 빌드 도구. 이에 따라 컴파일과" +
                             " 빌드를 동시에 수행, 테스트를 병행하거나 서버 측 Deploy 자원을 관리할 수 있는 환경을 제공한다. 또한 라이브러리 " +
                             " 관리 기능도 내포하고 있다. Java로 개발하다 보면 다양한 라이브러리를 필요로 하게 되는데, settings.xml 또는 " +
@@ -107,8 +110,9 @@ public class InitDB {
                     .title("메이븐이란 무엇인가?")
                     .imageUrl("/IMG_1708.JPG")
                     .article("<p>asdddd</p>")
-                    .tags(List.of(tag1))
+                    .tags(Set.of(tag2))
                     .createdAt(LocalDateTime.now())
+                    .user(user)
                     .description("아파치 소프트웨어 재단에서 개발하는 java 기반 프로젝트의 라이프사이클 관리를 위한 빌드 도구. 이에 따라 컴파일과" +
                             " 황경욱 빌드를 동시에 수행, 테스트를 병행하거나 서버 측 Deploy 자원을 관리할 수 있는 환경을 제공한다. 또한 라이브러리 " +
                             " 관리 기능도 내포하고 있다. Java로 개발하다 보면 다양한 라이브러리를 필요로 하게 되는데, settings.xml 또는 " +
@@ -118,8 +122,9 @@ public class InitDB {
                     .title("QUERYDSL이란 무엇인가?")
                     .imageUrl("/IMG_1708.JPG")
                     .article("<p>asdddd</p>")
-                    .tags(List.of(tag1))
+                    .tags(Set.of(tag1))
                     .createdAt(LocalDateTime.now())
+                    .user(user)
                     .description("아파치 소프트웨어 재단에서 개발하는 java 기반 프로젝트의 라이프사이클 관리를 위한 빌드 도구. 이에 따라 컴파일과" +
                             " 빌드를 동시에 수행, 테스트를 병행하거나 서버 측 Deploy 자원을 관리할 수 있는 환경을 제공한다. 또한 라이브러리 " +
                             " 관리 기능도 내포하고 있다. Java로 개발하다 보면 다양한 라이브러리를 필요로 하게 되는데, settings.xml 또는 " +
@@ -130,7 +135,8 @@ public class InitDB {
                     .imageUrl("/IMG_1708.JPG")
                     .article("<p>asdddd</p>")
                     .createdAt(LocalDateTime.now())
-                    .tags(List.of(tag1))
+                    .tags(Set.of(tag2))
+                    .user(user)
                     .description("아파치 소프트웨어 재단에서 개발하는 java 기반 프로젝트의 라이프사이클 관리를 위한 빌드 도구. 이에 따라 컴파일과" +
                             " 빌드를 동시에 수행, 테스트를 병행하거나 서버 측 Deploy 자원을 관리할 수 있는 환경을 제공한다. 또한 라이브러리 " +
                             " 관리 기능도 내포하고 있다. Java로 개발하다 보면 다양한 라이브러리를 필요로 하게 되는데, settings.xml 또는 " +
@@ -140,8 +146,9 @@ public class InitDB {
                     .title("DOCKER란 무엇인가?")
                     .imageUrl("/IMG_1708.JPG")
                     .article("<p>asdddd</p>")
-                    .tags(List.of(tag2))
+                    .tags(Set.of(tag2))
                     .createdAt(LocalDateTime.now())
+                    .user(user)
                     .description("아파치 소프트웨어 재단에서 개발하는 java 기반 프로젝트의 라이프사이클 관리를 위한 빌드 도구. 이에 따라 컴파일과" +
                             " 빌드를 동시에 수행, 테스트를 병행하거나 서버 측 Deploy 자원을 관리할 수 있는 환경을 제공한다. 또한 라이브러리 " +
                             " 관리 기능도 내포하고 있다. Java로 개발하다 보면 다양한 라이브러리를 필요로 하게 되는데, settings.xml 또는 " +
@@ -151,8 +158,9 @@ public class InitDB {
                     .title("VUE란 무엇인가?")
                     .imageUrl("/IMG_1708.JPG")
                     .article("<p>asdddd</p>")
-                    .tags(List.of(tag2))
+                    .tags(Set.of(tag2))
                     .createdAt(LocalDateTime.now())
+                    .user(user)
                     .description("아파치 소프트웨어 재단에서 개발하는 java 기반 프로젝트의 라이프사이클 관리를 위한 빌드 도구. 이에 따라 컴파일과" +
                             " 빌드를 동시에 수행, 테스트를 병행하거나 서버 측 Deploy 자원을 관리할 수 있는 환경을 제공한다. 또한 라이브러리 " +
                             " 관리 기능도 내포하고 있다. Java로 개발하다 보면 다양한 라이브러리를 필요로 하게 되는데, settings.xml 또는 " +
@@ -161,9 +169,10 @@ public class InitDB {
             Content content8 = Content.builder()
                     .title("자바스크립트란 무엇인가?")
                     .imageUrl("/IMG_1708.JPG")
-                    .tags(List.of(tag2))
+                    .tags(Set.of(tag2))
                     .article("<p>asdddd</p>")
                     .createdAt(LocalDateTime.now())
+                    .user(user)
                     .description("아파치 소프트웨어 재단에서 개발하는 java 기반 프로젝트의 라이프사이클 관리를 위한 빌드 도구. 이에 따라 컴파일과" +
                             " 빌드를 동시에 수행, 테스트를 병행하거나 서버 측 Deploy 자원을 관리할 수 있는 환경을 제공한다. 또한 라이브러리 " +
                             " 관리 기능도 내포하고 있다. Java로 개발하다 보면 다양한 라이브러리를 필요로 하게 되는데, settings.xml 또는 " +
@@ -173,8 +182,9 @@ public class InitDB {
                     .title("리액트란 무엇인가?")
                     .imageUrl("/IMG_1708.JPG")
                     .article("<p>asdddd</p>")
-                    .tags(List.of(tag2))
+                    .tags(Set.of(tag2))
                     .createdAt(LocalDateTime.now())
+                    .user(user)
                     .description("아파치 소프트웨어 재단에서 개발하는 java 기반 프로젝트의 라이프사이클 관리를 위한 빌드 도구. 이에 따라 컴파일과" +
                             " 빌드를 동시에 수행, 테스트를 병행하거나 서버 측 Deploy 자원을 관리할 수 있는 환경을 제공한다. 또한 라이브러리 " +
                             " 관리 기능도 내포하고 있다. Java로 개발하다 보면 다양한 라이브러리를 필요로 하게 되는데, settings.xml 또는 " +
@@ -184,8 +194,9 @@ public class InitDB {
                     .title("자바란 무엇인가?")
                     .imageUrl("/IMG_1708.JPG")
                     .article("<p>asdddd</p>")
-                    .tags(List.of(tag2))
+                    .tags(Set.of(tag2))
                     .createdAt(LocalDateTime.now())
+                    .user(user)
                     .description("아파치 소프트웨어 재단에서 개발하는 java 기반 프로젝트의 라이프사이클 관리를 위한 빌드 도구. 이에 따라 컴파일과" +
                             " 빌드를 동시에 수행, 테스트를 병행하거나 서버 측 Deploy 자원을 관리할 수 있는 환경을 제공한다. 또한 라이브러리 " +
                             " 관리 기능도 내포하고 있다. Java로 개발하다 보면 다양한 라이브러리를 필요로 하게 되는데, settings.xml 또는 " +

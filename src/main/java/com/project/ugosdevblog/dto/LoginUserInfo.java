@@ -5,14 +5,23 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class UserPostReq {
-    private String userId;
-    private String password;
+public class LoginUserInfo {
+
+    private Long id;
+
+    private String username;
+
     private String email;
-    private String profile;
+
+    private String signUpAt;
+
+    private String profileUrl;
+
+    private boolean emailSubscribe;
 }

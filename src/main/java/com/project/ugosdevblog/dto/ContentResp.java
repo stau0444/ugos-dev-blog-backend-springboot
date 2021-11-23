@@ -19,5 +19,6 @@ public class ContentResp {
     private String imageUrl;
     private String article;
     private String description;
+    private Long userId;
     private List<String> tags = new ArrayList();
 }

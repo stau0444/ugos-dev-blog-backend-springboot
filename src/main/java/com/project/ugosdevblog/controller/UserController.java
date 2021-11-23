@@ -1,13 +1,11 @@
 package com.project.ugosdevblog.controller;
 
-import com.project.ugosdevblog.dto.LoginReq;
+import com.project.ugosdevblog.dto.UpdateUserReq;
 import com.project.ugosdevblog.dto.UserPostReq;
 import com.project.ugosdevblog.entity.User;
-import com.project.ugosdevblog.entity.UserAuthority;
 import com.project.ugosdevblog.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -37,10 +35,16 @@ public class UserController {
                 .password(encoder.encode(reqData.getPassword()))
                 .emailSubscribe(false)
                 .enabled(true)
+                .profileUrl(reqData.getProfile())
                 .username(reqData.getUserId())
                 .signUpAt(LocalDateTime.now())
                 .build();
         userService.saveUser(user);
+    }
+
+    @PutMapping("")
+    public void updateUser(@RequestBody UpdateUserReq reqData){
+        userService.updateUserInfo(reqData);
     }
 }
 

@@ -30,6 +30,7 @@ public class JWTCheckFilter extends BasicAuthenticationFilter {
         this.userService = userService;
     }
 
+
     @Override
     protected void doFilterInternal(
             HttpServletRequest request,
@@ -59,7 +60,7 @@ public class JWTCheckFilter extends BasicAuthenticationFilter {
                 chain.doFilter(request,response);
             }else{
                 //no Authorize
-               response.sendError(401,"excess token 만료");
+               response.sendError(401,"ACCESS_TOKEN_EXPIRED");
             }
     }
 }
