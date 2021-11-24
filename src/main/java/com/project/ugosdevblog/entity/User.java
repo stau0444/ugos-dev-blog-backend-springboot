@@ -35,7 +35,7 @@ public class User implements UserDetails {
 
     private String profileUrl;
 
-    @OneToMany(fetch = FetchType.LAZY , cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER , cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id",foreignKey = @ForeignKey(name = "user_id"))
     private Set<UserAuthority> authorities = new HashSet<>();
 

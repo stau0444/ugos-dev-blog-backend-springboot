@@ -49,10 +49,8 @@ public class ContentController {
         return  contentService.getContents(category,pageable);
     }
 
-
     @PostMapping("/content")
     public void addContent(@RequestBody ContentReq reqData){
-
         contentService.saveContent(reqData);
     }
 
@@ -61,7 +59,6 @@ public class ContentController {
        contentService.updateContent(id,reqData);
     }
 
-    @PostAuthorize(value = "hasAuthority('ROLE_ADMIN')")
     @DeleteMapping("content/{id}")
     public void deleteContent(@PathVariable Long id){
         contentRepository.deleteById(id);

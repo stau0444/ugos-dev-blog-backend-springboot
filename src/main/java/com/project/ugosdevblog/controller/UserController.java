@@ -1,5 +1,7 @@
 package com.project.ugosdevblog.controller;
 
+import com.project.ugosdevblog.dto.ChangePwdReq;
+import com.project.ugosdevblog.dto.FindPwdReq;
 import com.project.ugosdevblog.dto.UpdateUserReq;
 import com.project.ugosdevblog.dto.UserPostReq;
 import com.project.ugosdevblog.entity.User;
@@ -45,6 +47,20 @@ public class UserController {
     @PutMapping("")
     public void updateUser(@RequestBody UpdateUserReq reqData){
         userService.updateUserInfo(reqData);
+    }
+
+    @GetMapping("/find-id")
+    public void findId(@RequestParam String email){
+        userService.findUserId(email);
+    }
+
+    @GetMapping("/find-pwd")
+    public Integer getVerifyNum(FindPwdReq reqData){
+        return userService.sendVerifyNum(reqData.getUserEmail(),reqData.getUserId());
+    }
+    @PutMapping("/change-pwd")
+    public void changePwd(@RequestBody ChangePwdReq reqData){
+        userService.changePwd(reqData.getUsername(),reqData.getPwd(),encoder);
     }
 }
 
