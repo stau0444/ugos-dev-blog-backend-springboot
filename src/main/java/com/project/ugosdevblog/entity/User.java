@@ -2,6 +2,7 @@ package com.project.ugosdevblog.entity;
 
 import lombok.*;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -23,10 +24,12 @@ public class User implements UserDetails {
     @GeneratedValue
     private Long id;
 
+    @Column(unique = true)
     private String username;
 
     private String password;
 
+    @Column(unique = true)
     private String email;
 
     private LocalDateTime signUpAt;

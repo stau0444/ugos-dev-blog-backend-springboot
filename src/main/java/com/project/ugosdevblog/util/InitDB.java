@@ -46,7 +46,7 @@ public class InitDB {
                     .username("stau04")
                     .enabled(true)
                     .signUpAt(LocalDateTime.now())
-                    .email("ugo@ugo.com")
+                    .email("stau04@gmail.com")
                     .password(encoder.encode("asdasd12!"))
                     .build();
 

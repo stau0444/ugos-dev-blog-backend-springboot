@@ -3,6 +3,7 @@ package com.project.ugosdevblog.service;
 import com.project.ugosdevblog.dto.UpdateUserReq;
 import com.project.ugosdevblog.entity.User;
 import com.project.ugosdevblog.entity.UserAuthority;
+import com.project.ugosdevblog.exception.ExistUserException;
 import com.project.ugosdevblog.exception.NotExistUserException;
 import com.project.ugosdevblog.repository.AuthRepository;
 import com.project.ugosdevblog.repository.UserRepository;
@@ -67,12 +68,12 @@ public class UserService implements UserDetailsService {
     public void findUserId(String email) {
         Optional<User> userByEmail = userRepository.findByEmail(email);
         User user = userByEmail.orElseThrow(() -> new NotExistUserException("존재하지 않는 유저입니다."));
-        sendMailToUser("stau04@gmail.com",user.getUsername());
+        sendMailToUser(email,user.getUsername());
     }
     public int sendVerifyNum(String email,String username){
         Optional<User> user = userRepository.findByUsername(username);
         user.orElseThrow(()->new NotExistUserException("유저가 존재하지 않습니다"));
-        return sendMailToUser(email, username);
+        return sendMailToUser(email, null);
     }
 
     public int sendMailToUser(String userMail,String userName){
@@ -87,17 +88,20 @@ public class UserService implements UserDetailsService {
 
         StringBuffer contents = new StringBuffer();
         if(userName == null){
-            contents.append("<h1 style={{color:'white',background:'lightgray',marginTop:'20px'}}>Ugo's Dev blog에 </h1>\n");
-            contents.append("<h2 style={{color:'white',background:'royalblue'}}>요청하신 인증번호입니다.</h2>\n");
-            contents.append("<p style={{margin:'20px 0'}}>브라우저로 돌아가 아래 번호를 입력해 주세요</p>\n");
-            contents.append("<h3 style={{margin:'20px 0'}}>"+verifyNum+"</h3>\n");
-            contents.append("<small style={{margin:'20px 0'}}>Ugo's Dev Blog </small>\n");
+            contents.append("<div style=\"width: 50%; padding:20px ;border: 1px solid black; background-color: whitesmoke; border-radius: 30px; margin: 20px 20px;\">\n");
+            contents.append("<h1 style=\"color:white; background-color:coral ;margin-top:20px;\">안녕하세요 Ugos Dev blog에</h1>\n");
+            contents.append("<h2 style=\"color:rgb(47, 255, 82); background:royalblue;\">요청하신 인증번호입니다.</h2>");
+            contents.append("<small style=\"margin:20px 0;\">브라우저로 돌아가 아래 번호를 입력해 주세요.</small>");
+            contents.append("<p style=\"  text-align:center; color:rgb(27, 41, 20);font-size:30px;  border-radius: 30px; border:2px solid rgb(47, 255, 82)\">"+verifyNum+"</p>");
+            contents.append("<p style=\"margin:20px; font-family:monospace; font-weight: 700;\">UGO's Dev Blog </p>");
+            contents.append("</div>");
         }else {
-            contents.append("<h1 style={{color:'white',background:'lightgray',marginTop:'20px'}}>Ugo's Dev blog에 </h1>\n");
-            contents.append("<h2 style={{color:'white',background:'royalblue'}}>요청하신 인증번호입니다.</h2>\n");
-            contents.append("<p style={{margin:'20px 0'}}>회원님의 아이디는</p>\n");
-            contents.append("<h3 style={{margin:'20px 0'}}>"+userName+"  입니다</h3>\n");
-            contents.append("<small style={{margin:'20px 0'}}>Ugo's Dev Blog </small>\n");
+            contents.append("<div style=\"width: 50%; padding:20px ;border: 1px solid black; background-color: whitesmoke; border-radius: 30px; margin: 20px 20px;\">\n");
+            contents.append("<h1 style=\"color:white; background-color:coral ;margin-top:20px;\">안녕하세요 Ugos Dev blog 입니다</h1>\n");
+            contents.append("<h2 style=\"color:rgb(47, 255, 82); background:royalblue;\">회원님의 아이디는</h2>");
+            contents.append("<p style=\" text-align:center; color:rgb(27, 41, 20);font-size:30px; border-radius: 30px; border:2px solid rgb(47, 255, 82)\">"+userName+" 입니다.</p>");
+            contents.append("<p style=\"margin:20px; font-family:monospace; font-weight: 700;\">UGO's Dev Blog </p>");
+            contents.append("</div>");
         }
 
         Properties props = new Properties();
@@ -141,5 +145,13 @@ public class UserService implements UserDetailsService {
         Optional<User> byUsername = userRepository.findByUsername(username);
         User user = byUsername.orElseThrow(() -> new NotExistUserException("유저가 존재하지 않습니다"));
         user.setPassword(encoder.encode(pwd));
+    }
+
+    public Integer emailVerify(String email) {
+        Optional<User> byEmail = userRepository.findByEmail(email);
+        if(byEmail.isPresent()){
+            throw  new ExistUserException("해당 이메일로 이미 가입된 유저가 존재합니다.");
+        }
+        return sendMailToUser(email, null);
     }
 }

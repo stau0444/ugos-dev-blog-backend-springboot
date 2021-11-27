@@ -24,6 +24,12 @@ public class UserController {
         String message = "로그인 테스트";
         return message;
     }
+    @GetMapping("/email-verify")
+    public Integer emailVerify(String email){
+        Integer integer = userService.emailVerify(email);
+        System.out.println("integer = " + integer);
+        return integer;
+    }
 
     @GetMapping("/duplication-check")
     public boolean isDuplicatedId(@RequestParam String userId){

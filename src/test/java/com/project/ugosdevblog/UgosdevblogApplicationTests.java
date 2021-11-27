@@ -8,6 +8,7 @@ class UgosdevblogApplicationTests {
 
     @Test
     void contextLoads() {
+
     }
 
 }
