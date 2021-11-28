@@ -20,6 +20,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.util.StringUtils;
 
@@ -58,19 +59,19 @@ public class JWTLoginFilter extends UsernamePasswordAuthenticationFilter {
             HttpServletRequest request,
             HttpServletResponse response
     ) throws AuthenticationException {
-
+        if(request.getMethod().equals("OPTIONS")){
+            response.setStatus(200);
+            return null;
+        }
         LoginReq loginReq = null;
         String refresh_token = request.getHeader(HttpHeaders.AUTHORIZATION);
 
         //로그인 폼을 통한 로그인
         if(refresh_token == null){
             try {
+
                 System.out.println("METHOD = " + request.getMethod());
-                if(request.getMethod().equals("OPTIONS")){
-                    loginReq = LoginReq.builder().password("").userId("").build();
-                }else{
-                    loginReq = objectMapper.readValue(request.getInputStream(),LoginReq.class);
-                }
+                loginReq = objectMapper.readValue(request.getInputStream(),LoginReq.class);
 
             }catch (IOException e){
                 e.printStackTrace();
@@ -98,19 +99,6 @@ public class JWTLoginFilter extends UsernamePasswordAuthenticationFilter {
         }
     }
 
-
-    @Override
-    protected void unsuccessfulAuthentication(
-            HttpServletRequest request,
-            HttpServletResponse response,
-            AuthenticationException failed
-    ) throws IOException, ServletException {
-        if(request.getMethod().equals("OPTIONS")){
-            response.setStatus(200);
-        }
-        super.unsuccessfulAuthentication(request,response,failed);
-    }
-
     @Override
     protected void successfulAuthentication(
             HttpServletRequest request,
@@ -118,6 +106,7 @@ public class JWTLoginFilter extends UsernamePasswordAuthenticationFilter {
             FilterChain chain,
             Authentication authResult
     ) throws IOException, ServletException {
+
         User user = (User) authResult.getPrincipal();
         String refreshToken = JWTHelper.createRefreshToken(user);
 
