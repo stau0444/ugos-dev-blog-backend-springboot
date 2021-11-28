@@ -38,13 +38,14 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         JWTCheckFilter checkFilter = new JWTCheckFilter(authenticationManager(),userService);
         JWTLoginFilter loginFilter = new JWTLoginFilter(authenticationManager(),userService,tokenService,objectMapper,exceptionHandler);
+
         http.authorizeRequests(request->{
             request.antMatchers(HttpMethod.PUT,"/api/content").hasAuthority("ROLE_ADMIN");
             request.antMatchers(HttpMethod.POST,"/api/content").hasAuthority("ROLE_ADMIN");
             request.antMatchers(HttpMethod.GET,"/api/user/test").authenticated();
             request.anyRequest().permitAll();
+            request.antMatchers(HttpMethod.OPTIONS).permitAll();
         })
-                .cors().disable()
                 .csrf().disable()
                 .sessionManagement(session -> {
                     session.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
