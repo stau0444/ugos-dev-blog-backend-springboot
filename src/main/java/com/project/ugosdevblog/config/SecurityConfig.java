@@ -44,6 +44,7 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
             request.antMatchers(HttpMethod.GET,"/api/user/test").authenticated();
             request.anyRequest().permitAll();
         })
+                .cors().disable()
                 .csrf().disable()
                 .sessionManagement(session -> {
                     session.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
