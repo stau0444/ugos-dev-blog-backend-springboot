@@ -15,11 +15,13 @@ import com.project.ugosdevblog.exception.NotValidTokenException;
 import com.project.ugosdevblog.service.TokenService;
 import com.project.ugosdevblog.service.UserService;
 import org.springframework.http.MediaType;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.util.StringUtils;
 
 
 import javax.servlet.FilterChain;
@@ -56,19 +58,26 @@ public class JWTLoginFilter extends UsernamePasswordAuthenticationFilter {
             HttpServletRequest request,
             HttpServletResponse response
     ) throws AuthenticationException {
+
         LoginReq loginReq = null;
         String refresh_token = request.getHeader(HttpHeaders.AUTHORIZATION);
 
         //로그인 폼을 통한 로그인
         if(refresh_token == null){
             try {
-                loginReq = objectMapper.readValue(request.getInputStream(),LoginReq.class);
+                System.out.println("METHOD = " + request.getMethod());
+                if(request.getMethod().equals("OPTIONS")){
+                    loginReq = LoginReq.builder().password("").userId("").build();
+                }else{
+                    loginReq = objectMapper.readValue(request.getInputStream(),LoginReq.class);
+                }
+
             }catch (IOException e){
                 e.printStackTrace();
             }
-            UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
-                    loginReq.getUserId(),loginReq.getPassword()
-            );
+
+            UsernamePasswordAuthenticationToken token  = new UsernamePasswordAuthenticationToken(loginReq.getUserId(),loginReq.getPassword());
+
             return getAuthenticationManager().authenticate(token);
         }else{
         //리프레쉬 토큰을 통한 로그인
@@ -89,6 +98,18 @@ public class JWTLoginFilter extends UsernamePasswordAuthenticationFilter {
         }
     }
 
+
+    @Override
+    protected void unsuccessfulAuthentication(
+            HttpServletRequest request,
+            HttpServletResponse response,
+            AuthenticationException failed
+    ) throws IOException, ServletException {
+        if(request.getMethod().equals("OPTIONS")){
+            response.setStatus(200);
+        }
+        super.unsuccessfulAuthentication(request,response,failed);
+    }
 
     @Override
     protected void successfulAuthentication(
