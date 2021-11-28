@@ -43,8 +43,8 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
             request.antMatchers(HttpMethod.PUT,"/api/content").hasAuthority("ROLE_ADMIN");
             request.antMatchers(HttpMethod.POST,"/api/content").hasAuthority("ROLE_ADMIN");
             request.antMatchers(HttpMethod.GET,"/api/user/test").authenticated();
-            request.anyRequest().permitAll();
             request.antMatchers(HttpMethod.OPTIONS).permitAll();
+            request.anyRequest().permitAll();
         })
                 .csrf().disable()
                 .sessionManagement(session -> {
