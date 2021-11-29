@@ -7,8 +7,6 @@ import com.project.ugosdevblog.dto.UserPostReq;
 import com.project.ugosdevblog.entity.User;
 import com.project.ugosdevblog.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,13 +19,11 @@ public class UserController {
     private final UserService userService;
     private final PasswordEncoder encoder;
 
-
-
-//    @RequestMapping(method = RequestMethod.OPTIONS,path = "/login")
-//    public ResponseEntity<String> test(){
-//        System.out.println("preflight success");
-//        return ResponseEntity.status(200).body("options success");
-//    }
+    @GetMapping("/test")
+    public String test(){
+        String message = "로그인 테스트";
+        return message;
+    }
     @GetMapping("/email-verify")
     public Integer emailVerify(String email){
         Integer integer = userService.emailVerify(email);

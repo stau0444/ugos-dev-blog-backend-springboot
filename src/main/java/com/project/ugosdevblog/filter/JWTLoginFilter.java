@@ -20,6 +20,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.transaction.UnexpectedRollbackException;
 
 
 import javax.servlet.FilterChain;
@@ -67,7 +68,6 @@ public class JWTLoginFilter extends UsernamePasswordAuthenticationFilter {
                 if(request.getMethod().equals("OPTIONS")){
                     return new UsernamePasswordAuthenticationToken("","");
                 }
-                System.out.println("METHOD = " + request.getMethod());
                 loginReq = objectMapper.readValue(request.getInputStream(),LoginReq.class);
 
             }catch (IOException e){
@@ -83,8 +83,13 @@ public class JWTLoginFilter extends UsernamePasswordAuthenticationFilter {
             TokenVerifyResult result = JWTHelper.verify(refreshToken);
             tokenService.findToken(result.getUsername(),refreshToken).orElseThrow(
                     ()->{
-                        tokenService.deleteAll(result.getUsername());
-                        throw new TokenExpiredException("인증토큰이 탈취 됨");
+
+                        try{
+                            tokenService.deleteAll(result.getUsername());
+                        }catch (UnexpectedRollbackException e){
+                            System.out.println("token error " + e);
+                        }
+                        throw new TokenExpiredException("인증토큰이 탈취 되어 강제로 로그아웃되었습니다. 비밀번호를 변경해주세요");
                     }
             );
             if(result.isSuccess()){
@@ -104,7 +109,6 @@ public class JWTLoginFilter extends UsernamePasswordAuthenticationFilter {
             Authentication authResult
     ) throws IOException, ServletException {
                 if(request.getMethod().equals("OPTIONS")){
-                    System.out.println("OPTIONS");
                     response.setHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN,"http://localhost:3000");
                     response.setHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_METHODS,"*");
                     response.setHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_HEADERS,"*");

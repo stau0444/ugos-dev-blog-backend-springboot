@@ -3,6 +3,7 @@ package com.project.ugosdevblog.service;
 import com.project.ugosdevblog.entity.Token;
 import com.project.ugosdevblog.repository.TokenRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,7 +21,12 @@ public class TokenService {
     public Optional<Token> findToken(String username,String refreshToken){
         return repository.findTokenByUsernameAndToken(username,refreshToken);
     }
-    public void deleteAll(String username){
-        repository.deleteById(username);
+    public String deleteAll(String username) {
+        try {
+            repository.deleteById(username);
+        } catch (EmptyResultDataAccessException e) {
+            return e.getMessage();
+        }
+        return "";
     }
 }

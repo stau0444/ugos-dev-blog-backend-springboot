@@ -9,6 +9,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
@@ -39,6 +40,7 @@ public class JWTCheckFilter extends BasicAuthenticationFilter {
             HttpServletResponse response,
             FilterChain chain
     ) throws IOException, ServletException {
+
             String authToken = request.getHeader(HttpHeaders.AUTHORIZATION);
             String refreshToken = request.getHeader("refresh_token");
 
@@ -48,7 +50,6 @@ public class JWTCheckFilter extends BasicAuthenticationFilter {
             }
 
             String token = authToken.substring("Bearer ".length());
-            System.out.println("token = " + token);
             TokenVerifyResult result = JWTHelper.verify(token);
 
             if(result.isSuccess()){
@@ -64,15 +65,5 @@ public class JWTCheckFilter extends BasicAuthenticationFilter {
                 //no Authorize
                response.sendError(401,"ACCESS_TOKEN_EXPIRED");
             }
-    }
-
-    @Override
-    protected void onSuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, Authentication authResult) throws IOException {
-        response.setHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN,"http://localhost:3000");
-        response.setHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_METHODS,"*");
-        response.setHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_HEADERS,"*");
-        response.setHeader(HttpHeaders.ACCESS_CONTROL_EXPOSE_HEADERS,"*");
-        response.setHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_CREDENTIALS,"true");
-        super.onSuccessfulAuthentication(request,response,authResult);
     }
 }

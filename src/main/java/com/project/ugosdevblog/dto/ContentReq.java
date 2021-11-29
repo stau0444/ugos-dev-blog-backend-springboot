@@ -6,8 +6,10 @@ import lombok.*;
 import java.util.List;
 
 
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Builder
-@Getter
 public class ContentReq {
 
     private String title;
