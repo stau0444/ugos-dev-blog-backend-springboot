@@ -38,14 +38,12 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         JWTCheckFilter checkFilter = new JWTCheckFilter(authenticationManager(),userService);
         JWTLoginFilter loginFilter = new JWTLoginFilter(authenticationManager(),userService,tokenService,objectMapper,exceptionHandler);
-        http.authorizeRequests(
-                request->{
-                    request.antMatchers(HttpMethod.OPTIONS,"/api/**").permitAll()
-                            .antMatchers(HttpMethod.PUT,"/api/content").hasAuthority("ROLE_ADMIN")
-                            .antMatchers(HttpMethod.POST,"/api/content").hasAuthority("ROLE_ADMIN")
-                            .antMatchers(HttpMethod.GET,"/api/user/test").authenticated()
-                    .anyRequest().permitAll();
-                })
+        http.authorizeRequests()
+                .antMatchers(HttpMethod.OPTIONS,"/api/**").permitAll()
+                .antMatchers(HttpMethod.PUT,"/api/content").hasAuthority("ROLE_ADMIN")
+                .antMatchers(HttpMethod.POST,"/api/content").hasAuthority("ROLE_ADMIN")
+                .antMatchers(HttpMethod.GET,"/api/user/test").authenticated()
+                .anyRequest().permitAll().and()
                 .csrf().disable()
                 .sessionManagement(session -> {
                     session.sessionCreationPolicy(SessionCreationPolicy.STATELESS);

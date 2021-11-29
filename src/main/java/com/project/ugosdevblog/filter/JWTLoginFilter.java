@@ -2,7 +2,6 @@ package com.project.ugosdevblog.filter;
 
 import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.net.HttpHeaders;
 import com.project.ugosdevblog.Helper.JWTHelper;
 import com.project.ugosdevblog.config.CustomExceptionHandler;
 import com.project.ugosdevblog.dto.LoginReq;
@@ -14,15 +13,13 @@ import com.project.ugosdevblog.entity.User;
 import com.project.ugosdevblog.exception.NotValidTokenException;
 import com.project.ugosdevblog.service.TokenService;
 import com.project.ugosdevblog.service.UserService;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.util.StringUtils;
 
 
 import javax.servlet.FilterChain;
@@ -54,22 +51,22 @@ public class JWTLoginFilter extends UsernamePasswordAuthenticationFilter {
         setAuthenticationFailureHandler(exceptionHandler);
     }
 
+
     @Override
     public Authentication attemptAuthentication(
             HttpServletRequest request,
             HttpServletResponse response
     ) throws AuthenticationException {
-        if(request.getMethod().equals("OPTIONS")){
-            response.setStatus(200);
-            return null;
-        }
         LoginReq loginReq = null;
         String refresh_token = request.getHeader(HttpHeaders.AUTHORIZATION);
+
 
         //로그인 폼을 통한 로그인
         if(refresh_token == null){
             try {
-
+                if(request.getMethod().equals("OPTIONS")){
+                    return new UsernamePasswordAuthenticationToken("","");
+                }
                 System.out.println("METHOD = " + request.getMethod());
                 loginReq = objectMapper.readValue(request.getInputStream(),LoginReq.class);
 
@@ -106,33 +103,47 @@ public class JWTLoginFilter extends UsernamePasswordAuthenticationFilter {
             FilterChain chain,
             Authentication authResult
     ) throws IOException, ServletException {
+                if(request.getMethod().equals("OPTIONS")){
+                    System.out.println("OPTIONS");
+                    response.setHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN,"http://localhost:3000");
+                    response.setHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_METHODS,"*");
+                    response.setHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_HEADERS,"*");
+                    response.setHeader(HttpHeaders.ACCESS_CONTROL_EXPOSE_HEADERS,"*");
+                    response.setHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_CREDENTIALS,"true");
+                }else{
+                    System.out.println("OTHERS REQUEST"+request.getMethod());
+                    User user = (User) authResult.getPrincipal();
+                    String refreshToken = JWTHelper.createRefreshToken(user);
 
-        User user = (User) authResult.getPrincipal();
-        String refreshToken = JWTHelper.createRefreshToken(user);
+                    response.setHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
+                    response.setHeader("auth_token", JWTHelper.createAuthToken(user));
+                    response.setHeader("refresh_token" , refreshToken);
+                    response.setHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN,"http://localhost:3000");
+                    response.setHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_METHODS,"*");
+                    response.setHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_HEADERS,"*");
+                    response.setHeader(HttpHeaders.ACCESS_CONTROL_EXPOSE_HEADERS,"*");
+                    response.setHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_CREDENTIALS,"true");
 
-        response.setHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
-        response.setHeader("auth_token", JWTHelper.createAuthToken(user));
-        response.setHeader("refresh_token" , refreshToken);
-
-        response.getOutputStream().write(objectMapper.writeValueAsBytes(
-                LoginStateResp.builder()
-                        .isLogin(true)
-                        .userInfo(LoginUserInfo.builder()
-                                .email(user.getEmail())
-                                .id(user.getId())
-                                .profileUrl(user.getProfileUrl())
-                                .emailSubscribe(user.isEmailSubscribe())
-                                .username(user.getUsername())
-                                .signUpAt(DateTimeFormatter.ISO_LOCAL_DATE.format(user.getSignUpAt()))
-                                .build())
-                        .build()
-        ));
-        //DB에 토큰 저장
-        tokenService.saveToken(
-                Token.builder()
-                        .username(user.getUsername())
-                        .token(refreshToken)
-                        .build()
-        );
-    }
+                    response.getOutputStream().write(objectMapper.writeValueAsBytes(
+                            LoginStateResp.builder()
+                                    .isLogin(true)
+                                    .userInfo(LoginUserInfo.builder()
+                                            .email(user.getEmail())
+                                            .id(user.getId())
+                                            .profileUrl(user.getProfileUrl())
+                                            .emailSubscribe(user.isEmailSubscribe())
+                                            .username(user.getUsername())
+                                            .signUpAt(DateTimeFormatter.ISO_LOCAL_DATE.format(user.getSignUpAt()))
+                                            .build())
+                                    .build()
+                    ));
+                    //DB에 토큰 저장
+                    tokenService.saveToken(
+                            Token.builder()
+                                    .username(user.getUsername())
+                                    .token(refreshToken)
+                                    .build()
+                    );
+                }
+            }
 }
