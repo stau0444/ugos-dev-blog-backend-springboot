@@ -15,6 +15,7 @@ public class HomeController {
         headers.add(HttpHeaders.ACCESS_CONTROL_ALLOW_METHODS,"*");
         headers.add(HttpHeaders.ACCESS_CONTROL_ALLOW_CREDENTIALS,"true");
         headers.add(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN,"*");
+        System.out.println("/health Check");
         return ResponseEntity.status(200)
                 .headers(headers).body("");
     }
