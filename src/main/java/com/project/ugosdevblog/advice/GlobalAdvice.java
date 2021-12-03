@@ -16,6 +16,8 @@ import java.util.Map;
 @Slf4j
 @RestControllerAdvice
 public class GlobalAdvice{
+
+
     @ExceptionHandler(value = AccessDeniedException.class)
     public ResponseEntity<Map<String,Object>> AccessDeniedException(AccessDeniedException exception){
         System.out.println("AccessDeniedException" + exception);

@@ -17,7 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 
-@CrossOrigin()
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor
