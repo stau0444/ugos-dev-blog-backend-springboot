@@ -109,7 +109,7 @@ public class JWTLoginFilter extends UsernamePasswordAuthenticationFilter {
             Authentication authResult
     ) throws IOException, ServletException {
                 if(request.getMethod().equals("OPTIONS")){
-                    response.setHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN,"http://localhost:3000");
+                    response.setHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN,"*");
                     response.setHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_METHODS,"*");
                     response.setHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_HEADERS,"*");
                     response.setHeader(HttpHeaders.ACCESS_CONTROL_EXPOSE_HEADERS,"*");
@@ -122,7 +122,7 @@ public class JWTLoginFilter extends UsernamePasswordAuthenticationFilter {
                     response.setHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
                     response.setHeader("auth_token", JWTHelper.createAuthToken(user));
                     response.setHeader("refresh_token" , refreshToken);
-                    response.setHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN,"http://localhost:3000");
+                    response.setHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN,"*");
                     response.setHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_METHODS,"*");
                     response.setHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_HEADERS,"*");
                     response.setHeader(HttpHeaders.ACCESS_CONTROL_EXPOSE_HEADERS,"*");
