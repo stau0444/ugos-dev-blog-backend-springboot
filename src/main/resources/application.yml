@@ -1,8 +1,26 @@
 
+spring:
+  profiles:
+    active: prod
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        default_batch_fetch_size: 100
+  datasource:
+    url: jdbc:mariadb://blogdb.cqg41lvwng6q.ap-northeast-2.rds.amazonaws.com/ugoblogdb
+    username: ugo
+    password: asdasd12!
+    driver-class-name: org.mariadb.jdbc.Driver
 server:
   port: 8080
 
+---
+
 spring:
+  profiles:
+    active: dev
   jpa:
     hibernate:
       ddl-auto: create
@@ -11,7 +29,10 @@ spring:
         default_batch_fetch_size: 100
     open-in-view: true
   datasource:
-    url: jdbc:mariadb://blogdb.cqg41lvwng6q.ap-northeast-2.rds.amazonaws.com/ugoblogdb
-    username: ugo
-    password: asdasd12!
-    driver-class-name: org.mariadb.jdbc.Driver
+    url: jdbc:h2:tcp://localhost/~/ugosdevblog
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+server:
+  port: 8080
+

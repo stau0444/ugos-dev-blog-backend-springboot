@@ -6,6 +6,7 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import com.project.ugosdevblog.dto.TokenVerifyResult;
 import com.project.ugosdevblog.entity.User;
 import java.time.Instant;
+import java.util.Date;
 
 
 public class JWTHelper {
@@ -27,10 +28,13 @@ public class JWTHelper {
                 .sign(ALGORITHM);
     }
 
+    public static Date getExpiresDate(String token){
+        return JWT.require(ALGORITHM).build().verify(token).getExpiresAt();
+    }
     public static TokenVerifyResult verify(String token){
         try{
-                DecodedJWT result = JWT.require(ALGORITHM).build().verify(token);
-                return TokenVerifyResult.builder()
+            DecodedJWT result = JWT.require(ALGORITHM).build().verify(token);
+            return TokenVerifyResult.builder()
                         .success(true)
                         .username(result.getSubject())
                         .build();

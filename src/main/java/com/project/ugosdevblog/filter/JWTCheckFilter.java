@@ -40,7 +40,6 @@ public class JWTCheckFilter extends BasicAuthenticationFilter {
             HttpServletResponse response,
             FilterChain chain
     ) throws IOException, ServletException {
-
             String authToken = request.getHeader(HttpHeaders.AUTHORIZATION);
             String refreshToken = request.getHeader("refresh_token");
 

@@ -15,16 +15,16 @@ import com.project.ugosdevblog.service.TokenService;
 import com.project.ugosdevblog.service.UserService;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseCookie;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.transaction.UnexpectedRollbackException;
 
 
 import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -35,7 +35,7 @@ public class JWTLoginFilter extends UsernamePasswordAuthenticationFilter {
     private final ObjectMapper objectMapper;
     private final UserService userService;
     private final TokenService tokenService;
-    private final CustomExceptionHandler exceptionHandler;
+
     public JWTLoginFilter(
             AuthenticationManager authenticationManager ,
                           UserService userService,
@@ -47,7 +47,6 @@ public class JWTLoginFilter extends UsernamePasswordAuthenticationFilter {
         this.userService = userService;
         this.tokenService = tokenService;
         this.objectMapper = objectMapper;
-        this.exceptionHandler = exceptionHandler;
         setFilterProcessesUrl("/api/user/login");
         setAuthenticationFailureHandler(exceptionHandler);
     }
@@ -107,7 +106,7 @@ public class JWTLoginFilter extends UsernamePasswordAuthenticationFilter {
             HttpServletResponse response,
             FilterChain chain,
             Authentication authResult
-    ) throws IOException, ServletException {
+    ) throws IOException{
                 if(request.getMethod().equals("OPTIONS")){
                     response.setHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN,"*");
                     response.setHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_METHODS,"*");
