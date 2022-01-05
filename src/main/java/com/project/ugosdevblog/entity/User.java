@@ -38,10 +38,12 @@ public class User implements UserDetails {
 
     private String profileUrl;
 
+    @Builder.Default
     @OneToMany(fetch = FetchType.EAGER , cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id",foreignKey = @ForeignKey(name = "user_id"))
     private Set<UserAuthority> authorities = new HashSet<>();
 
+    @Builder.Default
     @OneToMany(fetch = FetchType.LAZY , cascade = CascadeType.ALL)
     private List<Content> contents = new ArrayList<>();
 

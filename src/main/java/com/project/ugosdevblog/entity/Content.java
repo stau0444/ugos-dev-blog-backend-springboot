@@ -27,9 +27,11 @@ public class Content {
     @Lob
     private String description;
 
+    @Builder.Default
     @ManyToMany(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @JoinTable(joinColumns = @JoinColumn(name = "content_id"), inverseJoinColumns = @JoinColumn(name = "tag_id"))
     private Set<Tag> tags = new HashSet<>();
+
 
     @ManyToOne
     @JoinColumn(name = "user_id",foreignKey = @ForeignKey(name = "user_id"))

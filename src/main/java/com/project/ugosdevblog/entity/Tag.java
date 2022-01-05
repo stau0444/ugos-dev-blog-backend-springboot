@@ -18,6 +18,7 @@ public class Tag {
     @GeneratedValue
     private Long tagId;
 
+    @Builder.Default
     @ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE }, mappedBy = "tags")
     private List<Content> contents = new ArrayList<>();
 
