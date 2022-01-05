@@ -1,8 +1,6 @@
 package com.project.ugosdevblog.util;
 
-import com.project.ugosdevblog.entity.Content;
 import com.project.ugosdevblog.entity.Tag;
-import com.project.ugosdevblog.entity.User;
 import com.project.ugosdevblog.repository.ContentRepository;
 import com.project.ugosdevblog.repository.TagRepository;
 import com.project.ugosdevblog.repository.UserRepository;
@@ -13,9 +11,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
-import java.time.LocalDateTime;
+
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
+
 
 @Component
 @RequiredArgsConstructor
@@ -69,8 +68,18 @@ public class InitDB {
             Tag tag9 = Tag.builder()
                     .tagName("VUE")
                     .build();
-            List<Tag> tagList = List.of(tag1, tag2, tag3, tag4, tag5, tag6, tag7, tag8, tag9);
-            List<Tag> tags = tagRepository.saveAll(tagList);
+            List<Tag> tagList = new ArrayList<>();
+            tagList.add(tag1);
+            tagList.add(tag2);
+            tagList.add(tag3);
+            tagList.add(tag4);
+            tagList.add(tag5);
+            tagList.add(tag6);
+            tagList.add(tag7);
+            tagList.add(tag8);
+            tagList.add(tag9);
+
+            tagRepository.saveAll(tagList);
 
 
         }
