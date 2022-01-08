@@ -1,0 +1,12 @@
+FROM jenkins/jenkins:jdk11
+
+USER root
+
+COPY docker_install.sh /docker_install.sh
+RUN chmod +x /docker_install.sh
+RUN /docker_install.sh
+
+RUN groupadd -f dockder
+RUN usermod -aG docker jenkins
+USER jenkins
+
