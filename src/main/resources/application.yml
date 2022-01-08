@@ -14,7 +14,7 @@ spring:
     password: asdasd12!
     driver-class-name: org.mariadb.jdbc.Driver
 server:
-  port: 9050
+  port: 9000
 
 #---
 #
