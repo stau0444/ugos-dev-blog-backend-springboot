@@ -14,7 +14,5 @@ import java.util.Set;
 @Transactional(readOnly = true)
 public interface ContentPagingRepository extends PagingAndSortingRepository<Content,Long> {
 
-
-
     Page<Content> findByTags(Tag tag, Pageable pageable);
 }

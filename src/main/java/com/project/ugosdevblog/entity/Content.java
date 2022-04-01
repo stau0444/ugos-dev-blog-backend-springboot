@@ -16,7 +16,8 @@ import java.util.Set;
 @AllArgsConstructor
 public class Content {
 
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue
     private Long contentId;
 
     private String title;
@@ -36,6 +37,9 @@ public class Content {
     @ManyToOne
     @JoinColumn(name = "user_id",foreignKey = @ForeignKey(name = "user_id"))
     private User user;
+
+    @OneToMany(fetch = FetchType.LAZY ,cascade = CascadeType.ALL)
+    private List<Comment> comments;
 
     @Lob
     private String imageUrl;

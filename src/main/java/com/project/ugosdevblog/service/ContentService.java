@@ -1,13 +1,9 @@
 package com.project.ugosdevblog.service;
 
-import com.project.ugosdevblog.dto.ContentReq;
-import com.project.ugosdevblog.dto.ContentResp;
+import com.project.ugosdevblog.dto.*;
 import com.project.ugosdevblog.entity.Content;
 import com.project.ugosdevblog.entity.Tag;
-import com.project.ugosdevblog.repository.ContentPagingRepository;
-import com.project.ugosdevblog.repository.ContentRepository;
-import com.project.ugosdevblog.repository.TagRepository;
-import com.project.ugosdevblog.repository.UserRepository;
+import com.project.ugosdevblog.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -18,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -31,14 +28,15 @@ public class ContentService {
     private final ContentRepository contentRepository;
     private final TagRepository tagRepository;
     private final UserRepository userRepository;
+    private final CommentRepository commentRepository;
 
     public Page<ContentResp> getContents(String category, Pageable pageable){
         Page<Content> contentList = null;
         if(category.equals("")){
-            contentList = contentRepository.findAll(pageable);
+            contentList = contentRepository.findAllPagination(pageable);
         }else{
             Tag tag = tagRepository.findByTagName(category);
-            contentList = pagingRepository.findByTags(tag,pageable);
+            contentList = contentRepository.findByTagsCustom(tag.getTagName(),pageable);
         }
         List<Content> result = contentList.getContent();
         List<ContentResp> data = result
@@ -46,7 +44,7 @@ public class ContentService {
                 .map(content ->
                         ContentResp.builder()
                                 .article(content.getArticle())
-                                .createdAt(DateTimeFormatter.ISO_LOCAL_DATE.format(content.getCreatedAt()))
+                                .createdAt(content.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 ")))
                                 .description(content.getDescription())
                                 .id(content.getContentId())
                                 .imageUrl(content.getImageUrl())
@@ -66,6 +64,9 @@ public class ContentService {
     public ContentResp getContent(Long id) {
         Optional<Content> contentOp = contentRepository.findById(id);
         Content content = contentOp.orElseThrow();
+
+        PrevContentResp prevContent = contentRepository.findPrevContent(id);
+        NextContentResp nextContent = contentRepository.findNextContent(id);
         return ContentResp.builder()
                 .id(content.getContentId())
                 .article(content.getArticle())
@@ -79,6 +80,8 @@ public class ContentService {
                                 .map(tag -> tag.getTagName())
                                 .collect(Collectors.toList()))
                 .description(content.getDescription())
+                .prevContent(prevContent)
+                .nextContent(nextContent)
                 .build();
     }
 
@@ -115,5 +118,9 @@ public class ContentService {
         content.setTags(selectedTags);
         content.setTitle(reqData.getTitle());
         content.setUpdatedAt(LocalDateTime.now());
+    }
+
+    public Page<SearchResp> search(String keyword, Pageable pageable) {
+        return contentRepository.search(keyword, pageable);
     }
 }

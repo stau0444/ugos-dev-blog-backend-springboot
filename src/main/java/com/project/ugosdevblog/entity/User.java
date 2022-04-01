@@ -47,7 +47,11 @@ public class User implements UserDetails {
     @OneToMany(fetch = FetchType.LAZY , cascade = CascadeType.ALL)
     private List<Content> contents = new ArrayList<>();
 
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
+    private List<Comment> commentList;
+
     private boolean emailSubscribe;
+
 
     private boolean enabled;
 

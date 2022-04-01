@@ -22,6 +22,5 @@ public class CustomAuthEntryPoint implements AuthenticationEntryPoint {
                          AuthenticationException authException
     ) throws IOException, ServletException {
         response.sendError(401,authException.getMessage());
-
     }
 }

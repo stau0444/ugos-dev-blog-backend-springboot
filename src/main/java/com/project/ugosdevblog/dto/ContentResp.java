@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -21,4 +23,7 @@ public class ContentResp {
     private String description;
     private Long userId;
     private List<String> tags;
+    private List<CommentResp> comments;
+    private PrevContentResp prevContent;
+    private NextContentResp nextContent;
 }
