@@ -119,13 +119,13 @@ public class ContentController {
     }
     @PostMapping("/content/{id}/comment")
     public void addComment(@PathVariable Long id, @RequestBody CommentReq commentReq){
+        Long nextVal = commentRepository.getNextVal();
+        Optional<Content> byId = contentRepository.findById(id);
+        Content content = byId.orElseThrow(RuntimeException::new);
+        User user =  userRepository.findById(commentReq.getUserId()).orElseThrow(RuntimeException::new);
+        Comment comment = null;
         if(commentReq.getRepliedCommentId()==null){
-            Long nextVal = commentRepository.getNextVal();
-            Optional<Content> byId = contentRepository.findById(id);
-            Content content = byId.orElseThrow(RuntimeException::new);
-            User user =  userRepository.findById(commentReq.getUserId()).orElseThrow(RuntimeException::new);
-
-            Comment comment = Comment.builder()
+            comment = Comment.builder()
                     .id(nextVal)
                     .content(content)
                     .body(commentReq.getBody())
@@ -133,8 +133,17 @@ public class ContentController {
                     .createAt(LocalDateTime.now())
                     .user(user)
                     .build();
-            commentRepository.save(comment);
+        }else{
+            comment = Comment.builder()
+                    .id(nextVal)
+                    .content(content)
+                    .body(commentReq.getBody())
+                    .repliedCommentId(commentReq.getRepliedCommentId())
+                    .createAt(LocalDateTime.now())
+                    .user(user)
+                    .build();
         }
+        commentRepository.save(comment);
 
     }
 }
