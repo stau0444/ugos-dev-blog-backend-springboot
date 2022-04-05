@@ -62,27 +62,14 @@ public class ContentService {
     }
 
     public ContentResp getContent(Long id) {
-        Optional<Content> contentOp = contentRepository.findById(id);
-        Content content = contentOp.orElseThrow();
-
+        ContentResp content = contentRepository.findContentById(id);
+        List<String> tags = tagRepository.findSomeCase(id);
         PrevContentResp prevContent = contentRepository.findPrevContent(id);
         NextContentResp nextContent = contentRepository.findNextContent(id);
-        return ContentResp.builder()
-                .id(content.getContentId())
-                .article(content.getArticle())
-                .userId(content.getUser().getId())
-                .createdAt(DateTimeFormatter.ISO_LOCAL_DATE.format(content.getCreatedAt()))
-                .imageUrl(content.getImageUrl())
-                .title(content.getTitle())
-                .tags(
-                        content.getTags()
-                                .stream()
-                                .map(tag -> tag.getTagName())
-                                .collect(Collectors.toList()))
-                .description(content.getDescription())
-                .prevContent(prevContent)
-                .nextContent(nextContent)
-                .build();
+        content.setTags(tags);
+        content.setPrevContent(prevContent);
+        content.setNextContent(nextContent);
+        return content;
     }
 
     public void saveContent(ContentReq reqData) {

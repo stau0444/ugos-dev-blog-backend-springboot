@@ -18,6 +18,7 @@ public class Content {
 
     @Id
     @GeneratedValue
+    @Column(name="content_id")
     private Long contentId;
 
     private String title;
@@ -38,7 +39,7 @@ public class Content {
     @JoinColumn(name = "user_id",foreignKey = @ForeignKey(name = "user_id"))
     private User user;
 
-    @OneToMany(fetch = FetchType.LAZY ,cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "content" ,fetch = FetchType.LAZY ,cascade = CascadeType.ALL,orphanRemoval = true)
     private List<Comment> comments;
 
     @Lob

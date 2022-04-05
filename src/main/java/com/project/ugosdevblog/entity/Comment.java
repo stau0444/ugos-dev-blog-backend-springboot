@@ -31,4 +31,5 @@ public class Comment {
 
     private LocalDateTime updateAt;
 
+    private String replyTo;
 }

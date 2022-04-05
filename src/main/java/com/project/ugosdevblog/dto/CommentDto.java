@@ -17,13 +17,16 @@ public class CommentDto {
     private Long repliedCommentId;
     private LocalDateTime createdAt;
     private String userName;
-
+    private String profileUrl;
+    private String replyTo;
     @QueryProjection
-    public CommentDto(Long commentId, String body, Long repliedCommentId, LocalDateTime createdAt, String userName) {
+    public CommentDto(Long commentId, String body, Long repliedCommentId, LocalDateTime createdAt, String userName, String profileUrl,String replyTo) {
         this.commentId = commentId;
         this.body = body;
         this.repliedCommentId = repliedCommentId;
         this.createdAt = createdAt;
         this.userName = userName;
+        this.profileUrl = profileUrl;
+        this.replyTo = replyTo;
     }
 }

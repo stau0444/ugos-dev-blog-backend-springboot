@@ -1,9 +1,6 @@
 package com.project.ugosdevblog.repository;
 
-import com.project.ugosdevblog.dto.NextContentResp;
-import com.project.ugosdevblog.dto.PrevContentResp;
-import com.project.ugosdevblog.dto.SearchListResp;
-import com.project.ugosdevblog.dto.SearchResp;
+import com.project.ugosdevblog.dto.*;
 import com.project.ugosdevblog.entity.Content;
 import com.project.ugosdevblog.entity.Tag;
 import org.springframework.data.domain.Page;
@@ -24,4 +21,6 @@ public interface ContentRepositoryCustom {
     PrevContentResp findPrevContent(Long id);
 
     NextContentResp findNextContent(Long id);
+
+    ContentResp findContentById(Long id);
 }

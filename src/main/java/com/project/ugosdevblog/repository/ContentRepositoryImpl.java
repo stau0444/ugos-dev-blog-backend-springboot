@@ -16,9 +16,13 @@ import org.springframework.data.domain.Pageable;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
+import static com.project.ugosdevblog.entity.QContent.*;
 import static com.project.ugosdevblog.entity.QContent.content;
+import static com.project.ugosdevblog.entity.QTag.tag;
 
 @RequiredArgsConstructor
 public class ContentRepositoryImpl implements  ContentRepositoryCustom{
@@ -80,8 +84,35 @@ public class ContentRepositoryImpl implements  ContentRepositoryCustom{
     }
 
     @Override
+    public ContentResp findContentById(Long id) {
+        ContentDto content = queryFactory.select(
+                new QContentDto(
+                        QContent.content.contentId,
+                        QContent.content.article,
+                        QContent.content.user.id,
+                        QContent.content.createdAt,
+                        QContent.content.imageUrl,
+                        QContent.content.title,
+                        QContent.content.description
+                ))
+                .from(QContent.content)
+                .where(QContent.content.contentId.eq(id)).fetchOne();
+
+
+        return ContentResp.builder()
+                .userId(content.getUserId())
+                .createdAt(content.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 hh:mm:ss")))
+                .description(content.getDescription())
+                .imageUrl(content.getImageUrl())
+                .article(content.getArticle())
+                .title(content.getTitle())
+                .id(content.getId())
+                .build();
+    }
+
+    @Override
     public Page<Content> findByTagsCustom(String tagName, Pageable pageable) {
-        Tag selectedTag = queryFactory.selectFrom(QTag.tag).where(QTag.tag.tagName.eq(tagName)).fetchOne();
+        Tag selectedTag = queryFactory.selectFrom(tag).where(tag.tagName.eq(tagName)).fetchOne();
 
         QueryResults<Content> contentsByTag = queryFactory
                 .selectDistinct(content)

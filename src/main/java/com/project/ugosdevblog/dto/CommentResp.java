@@ -14,5 +14,7 @@ public class CommentResp {
     private String body;
     private Long repliedCommentId;
     private String createdAt;
+    private String replyTo;
     private String userName;
+    private String profileUrl;
 }

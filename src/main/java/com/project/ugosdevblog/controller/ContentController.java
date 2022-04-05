@@ -115,7 +115,10 @@ public class ContentController {
                         c.getBody(),
                         c.getRepliedCommentId(),
                         c.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 hh:mm:ss")),
-                        c.getUserName())).collect(Collectors.toList());
+                        c.getReplyTo(),
+                        c.getUserName(),
+                        c.getProfileUrl())
+                ).collect(Collectors.toList());
     }
     @PostMapping("/content/{id}/comment")
     public void addComment(@PathVariable Long id, @RequestBody CommentReq commentReq){
@@ -134,11 +137,16 @@ public class ContentController {
                     .user(user)
                     .build();
         }else{
+            Optional<Comment> isReplyTo = commentRepository.findById(commentReq.getRepliedCommentId());
+            Comment repliedComment = isReplyTo.orElseThrow(RuntimeException::new);
+            String replyTo = repliedComment.getUser().getUsername();
+            Long repliedCommentId = repliedComment.getRepliedCommentId();
             comment = Comment.builder()
                     .id(nextVal)
                     .content(content)
                     .body(commentReq.getBody())
-                    .repliedCommentId(commentReq.getRepliedCommentId())
+                    .repliedCommentId(repliedCommentId)
+                    .replyTo(replyTo)
                     .createAt(LocalDateTime.now())
                     .user(user)
                     .build();
