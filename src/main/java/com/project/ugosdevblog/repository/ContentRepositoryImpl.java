@@ -3,7 +3,6 @@ package com.project.ugosdevblog.repository;
 import com.project.ugosdevblog.dto.*;
 import com.project.ugosdevblog.entity.Content;
 import com.project.ugosdevblog.entity.QContent;
-import com.project.ugosdevblog.entity.QTag;
 import com.project.ugosdevblog.entity.Tag;
 import com.querydsl.core.QueryResults;
 import com.querydsl.jpa.JPQLQueryFactory;
