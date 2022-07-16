@@ -36,6 +36,7 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        System.out.println("git Test");
         JWTCheckFilter checkFilter = new JWTCheckFilter(authenticationManager(),userService);
         JWTLoginFilter loginFilter = new JWTLoginFilter(authenticationManager(),userService,tokenService,objectMapper,exceptionHandler);
         http.authorizeRequests()
