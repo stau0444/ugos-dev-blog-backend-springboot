@@ -1,8 +1,10 @@
 package com.project.ugosdevblog.service;
 
 import com.project.ugosdevblog.dto.*;
+import com.project.ugosdevblog.entity.Comment;
 import com.project.ugosdevblog.entity.Content;
 import com.project.ugosdevblog.entity.Tag;
+import com.project.ugosdevblog.entity.User;
 import com.project.ugosdevblog.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -75,8 +77,7 @@ public class ContentService {
     public void saveContent(ContentReq reqData) {
         List<String> tags = reqData.getTags();
 
-        Set<Tag> searchedTags = tags.stream().map((tag) ->
-                tagRepository.findByTagName(tag)
+        Set<Tag> searchedTags = tags.stream().map(tagRepository::findByTagName
         ).collect(Collectors.toSet());
 
         Content newContent = Content.builder()
@@ -95,7 +96,7 @@ public class ContentService {
     public void updateContent(Long id, ContentReq reqData) {
         Optional<Content> contentOp = contentRepository.findById(id);
         Set<Tag> selectedTags = reqData.getTags().stream().map(
-                tag -> tagRepository.findByTagName(tag)
+                tagRepository::findByTagName
         ).collect(Collectors.toSet());
         Content content = contentOp.orElseThrow(()->new RuntimeException("아이디 잘못됨"));
 
@@ -109,5 +110,38 @@ public class ContentService {
 
     public Page<SearchResp> search(String keyword, Pageable pageable) {
         return contentRepository.search(keyword, pageable);
+    }
+
+    public void addComment(Long id, CommentReq commentReq) {
+        Long nextVal = commentRepository.getNextVal();
+        Optional<Content> byId = contentRepository.findById(id);
+        Content content = byId.orElseThrow(RuntimeException::new);
+        User user =  userRepository.findById(commentReq.getUserId()).orElseThrow(RuntimeException::new);
+        Comment comment = null;
+        if(commentReq.getRepliedCommentId()==null){
+            comment = Comment.builder()
+                    .id(nextVal)
+                    .content(content)
+                    .body(commentReq.getBody())
+                    .repliedCommentId(nextVal)
+                    .createAt(LocalDateTime.now())
+                    .user(user)
+                    .build();
+        }else{
+            Optional<Comment> isReplyTo = commentRepository.findById(commentReq.getRepliedCommentId());
+            Comment repliedComment = isReplyTo.orElseThrow(RuntimeException::new);
+            String replyTo = repliedComment.getUser().getUsername();
+            Long repliedCommentId = repliedComment.getRepliedCommentId();
+            comment = Comment.builder()
+                    .id(nextVal)
+                    .content(content)
+                    .body(commentReq.getBody())
+                    .repliedCommentId(repliedCommentId)
+                    .replyTo(replyTo)
+                    .createAt(LocalDateTime.now())
+                    .user(user)
+                    .build();
+        }
+        commentRepository.save(comment);
     }
 }

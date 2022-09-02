@@ -24,10 +24,6 @@ public class CommentRepositoryImpl implements CommentRepositoryCustom{
 
     @Override
     public List<CommentDto> getComment(Long contentId) {
-//        List<Comment> results = queryFactory.selectFrom(comment)
-//                .orderBy(comment.repliedCommentId.asc(), comment.createAt.asc())
-//                .where(comment.content.contentId.eq(contentId))
-//                .fetchResults().getResults();
 
         List<CommentDto> commentList = queryFactory.select(new QCommentDto(
                 comment.id,

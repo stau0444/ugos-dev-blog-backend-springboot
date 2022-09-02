@@ -38,19 +38,9 @@ public class ContentController {
 
     private final ContentRepository contentRepository;
     private final ContentService contentService;
-    private final TagRepository tagRepository;
     private final CommentRepository commentRepository;
-    private final UserRepository userRepository;
-    private final UnicodeHandler unicodeHandler;
 
-    @GetMapping("/")
-    public String home(){
-        return "home";
-    }
-    @GetMapping("/test")
-    public String Test(){
-        return "test 요청 응답 데이터";
-    }
+
 
     @GetMapping("/content/search")
     public Page<SearchResp> getSearchList(@RequestParam String keyword, Pageable pageable){
@@ -66,16 +56,7 @@ public class ContentController {
     public Page<ContentResp> getContents(@RequestParam(defaultValue = "") String category  ,Pageable pageable ){
         return  contentService.getContents(category,pageable);
     }
-    @GetMapping("/tags")
-    public List<String> getTags(){
-        List<Tag> tags = tagRepository.findAll();
-        return tags.stream().map(tag -> tag.getTagName()).collect(Collectors.toList());
-    }
-    @PostMapping("/tag")
-    public String addTag(@RequestParam String name){
-        tagRepository.save(Tag.builder().tagName(name).build());
-        return "tag 추가됨";
-    }
+
 
     @GetMapping("/whitelist")
     public List<String> getWhiteList(@RequestParam(defaultValue = "검색어를 입력해주세요") String keyword){
@@ -87,7 +68,6 @@ public class ContentController {
                 whiteList.add(s);
             }
         }
-
         return whiteList;
     }
 
@@ -122,36 +102,7 @@ public class ContentController {
     }
     @PostMapping("/content/{id}/comment")
     public void addComment(@PathVariable Long id, @RequestBody CommentReq commentReq){
-        Long nextVal = commentRepository.getNextVal();
-        Optional<Content> byId = contentRepository.findById(id);
-        Content content = byId.orElseThrow(RuntimeException::new);
-        User user =  userRepository.findById(commentReq.getUserId()).orElseThrow(RuntimeException::new);
-        Comment comment = null;
-        if(commentReq.getRepliedCommentId()==null){
-            comment = Comment.builder()
-                    .id(nextVal)
-                    .content(content)
-                    .body(commentReq.getBody())
-                    .repliedCommentId(nextVal)
-                    .createAt(LocalDateTime.now())
-                    .user(user)
-                    .build();
-        }else{
-            Optional<Comment> isReplyTo = commentRepository.findById(commentReq.getRepliedCommentId());
-            Comment repliedComment = isReplyTo.orElseThrow(RuntimeException::new);
-            String replyTo = repliedComment.getUser().getUsername();
-            Long repliedCommentId = repliedComment.getRepliedCommentId();
-            comment = Comment.builder()
-                    .id(nextVal)
-                    .content(content)
-                    .body(commentReq.getBody())
-                    .repliedCommentId(repliedCommentId)
-                    .replyTo(replyTo)
-                    .createAt(LocalDateTime.now())
-                    .user(user)
-                    .build();
-        }
-        commentRepository.save(comment);
+        contentService.addComment(id,commentReq);
 
     }
 }

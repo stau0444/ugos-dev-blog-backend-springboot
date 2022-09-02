@@ -21,16 +21,10 @@ public class UserController {
     private final UserService userService;
     private final PasswordEncoder encoder;
 
-    @GetMapping("/test")
-    public String test(){
-        String message = "로그인 테스트";
-        return message;
-    }
+
     @GetMapping("/email-verify")
     public Integer emailVerify(String email){
-        Integer integer = userService.emailVerify(email);
-        System.out.println("integer = " + integer);
-        return integer;
+        return userService.emailVerify(email);
     }
 
     @GetMapping("/duplication-check")

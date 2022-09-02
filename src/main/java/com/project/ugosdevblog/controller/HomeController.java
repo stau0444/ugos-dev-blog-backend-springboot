@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class HomeController {
 
     @GetMapping("/")
-    public ResponseEntity healthCheck(){
+    public ResponseEntity<String> healthCheck(){
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.ACCESS_CONTROL_ALLOW_HEADERS,"*");
         headers.add(HttpHeaders.ACCESS_CONTROL_ALLOW_METHODS,"*");
