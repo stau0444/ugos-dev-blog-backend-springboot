@@ -15,7 +15,7 @@ spring:
     driver-class-name: org.mariadb.jdbc.Driver
 
 server:
-  port: 9000
+  port: 8080
 
 mail:
   admin-email: ugosdevblog@gmail.com
