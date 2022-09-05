@@ -1,36 +1,17 @@
 package com.project.ugosdevblog.controller;
 
 import com.project.ugosdevblog.dto.*;
-import com.project.ugosdevblog.entity.Comment;
-import com.project.ugosdevblog.entity.Content;
-import com.project.ugosdevblog.entity.Tag;
-import com.project.ugosdevblog.entity.User;
+
 import com.project.ugosdevblog.repository.CommentRepository;
 import com.project.ugosdevblog.repository.ContentRepository;
-import com.project.ugosdevblog.repository.TagRepository;
-import com.project.ugosdevblog.repository.UserRepository;
 import com.project.ugosdevblog.service.ContentService;
-import com.project.ugosdevblog.util.UnicodeHandler;
-import com.querydsl.jpa.hibernate.HibernateQuery;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.Hibernate;
-import org.hibernate.jdbc.ReturningWork;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import javax.persistence.Query;
-import javax.validation.Valid;
-import javax.validation.constraints.Max;
-import java.math.BigInteger;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 

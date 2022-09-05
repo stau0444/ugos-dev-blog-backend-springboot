@@ -86,7 +86,6 @@ public class JWTLoginFilter extends UsernamePasswordAuthenticationFilter {
             TokenVerifyResult result = JWTHelper.verify(refreshToken);
             tokenService.findToken(result.getUsername(),refreshToken).orElseThrow(
                     ()->{
-
                         try{
                             tokenService.deleteAll(result.getUsername());
                         }catch (UnexpectedRollbackException e){

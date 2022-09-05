@@ -42,6 +42,7 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
 
         JWTCheckFilter checkFilter = new JWTCheckFilter(authenticationManager(),tokenVerifier);
         JWTLoginFilter loginFilter = new JWTLoginFilter(authenticationManager(),userService,tokenService,objectMapper,exceptionHandler);
+
         http.authorizeRequests()
                 .antMatchers(HttpMethod.OPTIONS,"/api/**").permitAll()
                 .antMatchers(HttpMethod.PUT,"/api/content").hasAuthority("ROLE_ADMIN")
