@@ -13,7 +13,6 @@ spring:
     username: ugo
     password: asdasd12!
     driver-class-name: org.mariadb.jdbc.Driver
-
 server:
   port: 8080
 
