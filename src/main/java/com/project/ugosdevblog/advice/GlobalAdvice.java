@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import javax.security.sasl.AuthenticationException;
+import javax.validation.ConstraintViolationException;
 import java.util.Map;
 
 @Slf4j
@@ -20,7 +21,6 @@ public class GlobalAdvice{
 
     @ExceptionHandler(value = AccessDeniedException.class)
     public ResponseEntity<Map<String,Object>> AccessDeniedException(AccessDeniedException exception){
-        System.out.println("AccessDeniedException" + exception);
         return ResponseEntity.status(403).body(Map.of("message",exception.getMessage()));
     }
 
@@ -32,4 +32,6 @@ public class GlobalAdvice{
     public ResponseEntity<ErrorMessage> ExistUserException(ExistUserException exception){
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ErrorMessage.builder().message(exception.getMessage()).build());
     }
+
+
 }

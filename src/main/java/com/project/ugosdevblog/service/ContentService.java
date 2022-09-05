@@ -59,7 +59,7 @@ public class ContentService {
                                 .build()
                 ).collect(Collectors.toList());
         long total = contentList.getTotalElements();
-        System.out.println("total Count = " +total );
+
         return new PageImpl<>(data,pageable,total);
     }
 

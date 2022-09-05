@@ -22,15 +22,16 @@ import java.io.IOException;
 
 public class JWTCheckFilter extends BasicAuthenticationFilter {
 
-    private final UserService userService;
+
+    private final TokenVerifier tokenVerifier;
 
 
     public JWTCheckFilter(
             AuthenticationManager authenticationManager,
-            UserService userService
+            TokenVerifier tokenVerifier
     ){
         super(authenticationManager);
-        this.userService = userService;
+        this.tokenVerifier = tokenVerifier;
     }
 
 
@@ -43,26 +44,13 @@ public class JWTCheckFilter extends BasicAuthenticationFilter {
             String authToken = request.getHeader(HttpHeaders.AUTHORIZATION);
             String refreshToken = request.getHeader("refresh_token");
 
+          // 토큰이 없거나 , JWT 형식의 토큰이 아닐 경우
             if((authToken == null && refreshToken == null) || !authToken.startsWith("Bearer")){
                 chain.doFilter(request,response);
                 return;
             }
 
-            String token = authToken.substring("Bearer ".length());
-            TokenVerifyResult result = JWTHelper.verify(token);
+            tokenVerifier.verify(authToken,refreshToken,request,response,chain);
 
-            if(result.isSuccess()){
-                User user = (User) userService.loadUserByUsername(result.getUsername());
-
-                UsernamePasswordAuthenticationToken verifiedToken = new UsernamePasswordAuthenticationToken(
-                        user.getUsername(),null,user.getAuthorities()
-                );
-
-                SecurityContextHolder.getContext().setAuthentication(verifiedToken);
-                chain.doFilter(request,response);
-            }else{
-                //no Authorize
-               response.sendError(401,"ACCESS_TOKEN_EXPIRED");
-            }
     }
 }

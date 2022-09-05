@@ -13,6 +13,8 @@ import com.project.ugosdevblog.entity.User;
 import com.project.ugosdevblog.exception.NotValidTokenException;
 import com.project.ugosdevblog.service.TokenService;
 import com.project.ugosdevblog.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseCookie;
@@ -35,6 +37,8 @@ public class JWTLoginFilter extends UsernamePasswordAuthenticationFilter {
     private final ObjectMapper objectMapper;
     private final UserService userService;
     private final TokenService tokenService;
+
+    private final Logger logger = LoggerFactory.getLogger(getClass().getName());
 
     public JWTLoginFilter(
             AuthenticationManager authenticationManager ,
@@ -86,7 +90,7 @@ public class JWTLoginFilter extends UsernamePasswordAuthenticationFilter {
                         try{
                             tokenService.deleteAll(result.getUsername());
                         }catch (UnexpectedRollbackException e){
-                            System.out.println("token error " + e);
+                            logger.debug(e.getMessage());
                         }
                         throw new TokenExpiredException("인증토큰이 탈취 되어 강제로 로그아웃되었습니다. 비밀번호를 변경해주세요");
                     }
@@ -114,7 +118,6 @@ public class JWTLoginFilter extends UsernamePasswordAuthenticationFilter {
                     response.setHeader(HttpHeaders.ACCESS_CONTROL_EXPOSE_HEADERS,"*");
                     response.setHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_CREDENTIALS,"true");
                 }else{
-                    System.out.println("OTHERS REQUEST"+request.getMethod());
                     User user = (User) authResult.getPrincipal();
                     String refreshToken = JWTHelper.createRefreshToken(user);
 

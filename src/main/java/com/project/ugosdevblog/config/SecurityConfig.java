@@ -3,6 +3,7 @@ package com.project.ugosdevblog.config;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project.ugosdevblog.filter.JWTCheckFilter;
 import com.project.ugosdevblog.filter.JWTLoginFilter;
+import com.project.ugosdevblog.filter.TokenVerifier;
 import com.project.ugosdevblog.repository.TokenRepository;
 import com.project.ugosdevblog.service.TokenService;
 import com.project.ugosdevblog.service.UserService;
@@ -29,6 +30,8 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
     private final TokenService tokenService;
     private final CustomExceptionHandler exceptionHandler;
 
+    private final TokenVerifier tokenVerifier;
+
     @Bean
     public CustomAuthEntryPoint authenticationEntryPoint() {
         return new CustomAuthEntryPoint();
@@ -36,8 +39,8 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        System.out.println("git Test");
-        JWTCheckFilter checkFilter = new JWTCheckFilter(authenticationManager(),userService);
+
+        JWTCheckFilter checkFilter = new JWTCheckFilter(authenticationManager(),tokenVerifier);
         JWTLoginFilter loginFilter = new JWTLoginFilter(authenticationManager(),userService,tokenService,objectMapper,exceptionHandler);
         http.authorizeRequests()
                 .antMatchers(HttpMethod.OPTIONS,"/api/**").permitAll()
