@@ -5,12 +5,9 @@ import com.project.ugosdevblog.dto.TokenVerifyResult;
 import com.project.ugosdevblog.entity.User;
 import com.project.ugosdevblog.service.UserService;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
+
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.context.SecurityContextHolder;
+
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 import javax.servlet.FilterChain;

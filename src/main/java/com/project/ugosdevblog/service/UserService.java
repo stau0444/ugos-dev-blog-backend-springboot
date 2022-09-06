@@ -35,8 +35,7 @@ public class UserService implements UserDetailsService {
 
     public boolean CheckDuplication(String userId){
         Optional<User> byUserId = userRepository.findByUsername(userId);
-        boolean isExistId = byUserId.isPresent();
-        return isExistId;
+        return byUserId.isPresent();
     }
     public void saveUser(User user){
         User savedUser = userRepository.save(user);
@@ -75,7 +74,7 @@ public class UserService implements UserDetailsService {
     public int sendVerifyNum(String email,String username){
         Optional<User> user = userRepository.findByUsername(username);
         user.orElseThrow(()->new NotExistUserException("유저가 존재하지 않습니다"));
-        return sendMailToUser(email, null);
+        return sendMailToUser(email, "nouser");
     }
 
     public int sendMailToUser(String userMail,String userName){
@@ -93,6 +92,6 @@ public class UserService implements UserDetailsService {
         if(byEmail.isPresent()){
             throw  new ExistUserException("해당 이메일로 이미 가입된 유저가 존재합니다.");
         }
-        return sendMailToUser(email, null);
+        return sendMailToUser(email, "nouser");
     }
 }

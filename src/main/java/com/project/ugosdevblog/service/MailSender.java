@@ -26,7 +26,7 @@ public class MailSender {
         int verifyNum = random.nextInt(99999);
 
         StringBuilder contents = new StringBuilder();
-        if(userName == null){
+        if(userName.equals("nouser")){
             contents.append("<div style=\"width: 50%; padding:20px ;border: 1px solid black; background-color: whitesmoke; border-radius: 30px; margin: 20px 20px;\">\n");
             contents.append("<h1 style=\"color:white; background-color:coral ;margin-top:20px;\">안녕하세요 Ugos Dev blog에</h1>\n");
             contents.append("<h2 style=\"color:rgb(47, 255, 82); background:royalblue;\">요청하신 인증번호입니다.</h2>");
