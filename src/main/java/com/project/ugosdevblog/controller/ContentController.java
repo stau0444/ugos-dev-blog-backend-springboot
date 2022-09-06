@@ -6,6 +6,8 @@ import com.project.ugosdevblog.repository.CommentRepository;
 import com.project.ugosdevblog.repository.ContentRepository;
 import com.project.ugosdevblog.service.ContentService;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +22,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ContentController {
 
+    private final Logger logger = LoggerFactory.getLogger(getClass());
     private final ContentRepository contentRepository;
     private final ContentService contentService;
     private final CommentRepository commentRepository;
@@ -28,6 +31,7 @@ public class ContentController {
 
     @GetMapping("/content/search")
     public Page<SearchResp> getSearchList(@RequestParam String keyword, Pageable pageable){
+        logger.info("github hook test");
         return contentService.search(keyword,pageable);
     }
 

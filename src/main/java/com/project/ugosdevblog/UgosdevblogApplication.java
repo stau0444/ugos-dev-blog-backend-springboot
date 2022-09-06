@@ -14,6 +14,7 @@ import javax.persistence.EntityManager;
 public class UgosdevblogApplication {
 
     public static void main(String[] args) {
+
         SpringApplication.run(UgosdevblogApplication.class, args);
     }
 
