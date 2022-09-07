@@ -62,6 +62,8 @@
 
 ## 4. ERD
 
+<img width="725" alt="스크린샷 2022-09-08 오전 1 07 01" src="https://user-images.githubusercontent.com/51349774/188929378-4e113a53-1a5b-4c8b-868f-87d6b6536b21.png">
+
 ---
 
 ## 5. 주요 구현 기능
