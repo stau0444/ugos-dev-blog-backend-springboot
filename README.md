@@ -1,114 +1,124 @@
-#
+
 # UGO's Dev Blog API Server
 
+---
 ### 목차
-
-[1. 프로젝트 설명](#1-프로젝트-설명 )
-<br/>
-[2. 사용 라이브러리](#2-사용-라이브러리)
-<br/>
-[3. 주요 기능](#3-주요-기능)
-<br/>
-[4. 주요 기능별 설명](#4-주요-기능별-설명)
-<br/>
-
-#
-## 1. 프로젝트 설명
-#
-![로고 이미지](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FEACL2%2FbtrnfBYVtgA%2FL4dVWu9Dv4RddOZrhwxBrK%2Fimg.png)
-
-
-공부하는 것들을 정리해 놓을 수 있는 저만의 블로그를 만들어 보고 싶어 시작한 프로젝트입니다. Spring-boot 기반으로 구현되었으며 , 
-Jenkins (구축 서버) , Docker (배포 서버) 를 통해 CI/CD가 구현되어 있습니다.        
-<br/>
-
-> API Sever URL
-
-- https://www.ugosdevblog.com
-
-<br/>
 
 ---
 
-#
-## 1. 프로젝트 구조
-#
+#### [1.프로젝트 설명](#1.-프로젝트-설명)
+
+#### [2. 개발 환경](#2.-개발-환경)
+
+#### [3. 프로젝트 구조](#3.-프로젝트-구조)
+
+#### [4. ERD](#4.-ERD)
+
+#### [5. API 명세](#5.-API-명세)
+
+#### [6. 주요 기능](#6.-주요-기능)
+
+---
+
+## 1. 프로젝트 설명
+
+![로고 이미지](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FEACL2%2FbtrnfBYVtgA%2FL4dVWu9Dv4RddOZrhwxBrK%2Fimg.png)
 
 
-<img width="791" alt="스크린샷 2022-09-07 오후 11 17 31" src="https://user-images.githubusercontent.com/51349774/188903227-5014a683-320a-405c-a73f-ff51d5c7a12f.png">
+> 공부하는 것들을 정리해 놓을 수 있는 저만의 블로그를 만들어 보고 싶어 시작한 프로젝트입니다. `Spring-boot` 으로 만들어 졌으며 , 
+`Jenkins` (구축 서버) , `Docker` (배포 서버) 를 통해 CI/CD가 구현되어 있습니다.
+기본적인 글 작성 , 삭제 , 수정 , 검색 ,  이미지 업로드 ,회원 가입  , 로그인/아웃 , 댓글 작성 기능들이 구현되어 있습니다.  
 
 
+#### API Sever Domain
 
-#
-## 2. 사용 라이브러리
-#
-<br/>
+####  https://www.ugosdevblog.com
 
-|                 |Back-end Stack|
-|-----------------|--------|  
- Language        | JAVA 11
- Framwork        | Spring-boot 2.4.2
- Library         | Spring-Security ,Spring-data-JPA
- Web Container   | Tomcat 9.0.41
- Database        | AWS RDS MariaDB 10.5.12
- Test DB         | H2 Database
- Hosting         | AWS EC2 Ubuntu Server
- Version Control | Git , GitHub
- etc             | QueryDsl , Javax Mail , Lombock
+---
 
+## 2. 개발 환경
 
-#
-## 3. 주요 기능
-#
+|                 | Back-end Stack                   |
+|-----------------|----------------------------------|  
+| Language        | `JAVA 11  `                        |
+| CI/CD           | `Jenkins` , `Docker`                 |
+| Framwork        | `Spring-boot 2.4.2  `              |
+| Library         | `Spring-Security ,Spring-data-JPA` |
+| build Tool      | `gradle 6.6 `                      |
+| Web Container   | `Tomcat 9.0.41    `                |
+| Database        | `AWS RDS MariaDB 10.5.12`          |
+| Test DB         | `H2 Database`                      |
+| Cloud Instance  |` AWS EC2 Ubuntu Server  `          |
+| Version Control | `Git , GitHub `                    |
+| etc             | `QueryDsl , Javax Mail , Lombock`  |
 
+---
+
+## 3. 프로젝트 구조
+
+<img width="541" alt="스크린샷 2022-09-07 오후 11 17 31" src="https://user-images.githubusercontent.com/51349774/188903227-5014a683-320a-405c-a73f-ff51d5c7a12f.png">
+
+---
+
+## 4. ERD
+
+---
+
+## 5. 주요 구현 기능
+
+- `AWS EC2` ,`Jenkins` , `dockerhub를` 활용한 배포자동화
+- `JWT token` 을 활용한 로그인 , 로그인 유지
 - 이메일 인증을 통한 회원가입
-- JWT token 을 활용한 로그인 , 로그인 유지
-- Spring security를 통한 인증 및 인가
-- Spring-data-JPA를 통한 연관관계 맵핑 , 쿼리 생성
-- QueryDSL을 사용한 동적 쿼리 생성(검색 , 페이징)
+- `Spring security`를 통한 인증 및 인가
+- `JPA를` 통한 연관관계 맵핑 , 쿼리 생성
+- `QueryDSL`을 사용한 동적 쿼리 생성(검색 , 페이징)
 
-#
-## 4. 주요 기능별 설명
-#
+---
 
-> ### 이메일 인증을 통한 회원가입
-- Java Mail 을 활용하여 인증번호 이메일 전송
+## 6.API 명세
 
+### User
 
+아이디 중복체크 -	`GET  /api/user/duplication-check`
 
-#
-> ### JWT token을 활용한 로그인 , 로그인 유지
+이메일 인증 - `GET  /api/user/email-verify`
 
-- 유저 인증 후 JWT 토큰 발급 혹은 JWT 토큰 유효성 확인
-- access token , refresh 토큰을 이용한 로그인 유지
+아이디 찾기 - `GET  /api/user/find-id`
 
-<small>- 로그인 인증 필터 로직</small>
+비밀번호 찾기 -`GET  /api/user/find-pwd`
 
-```java
-```
+유저 정보 수정 - `PUT  /api/user/`
 
+유저 추가 - `POST  /api/user/`
 
-#
+비밀번호 변경 - `PUT  /api/user/change-pwd`
 
-> ### Spring-Security를 통한 인증 및 인가
-- Spring security 커스텀 필터를 통한 JWT 토큰 방식 유저인증
+### Content
 
-<small>- 로그인 토큰 검사 로직</small>
+컨텐츠 검색	`GET  /api/content/search`
 
-```java
-```
+단일 컨텐츠	`GET  /api/content/{contentId}`
 
+컨텐츠 리스트	`GET  /api/contents`
 
-#
+검색어 리스트	`GET  /api/whitelist`
 
-> ### Spring-Data-JPA를 통한 연관관계 맵핑 , 쿼리 생성
+컨텐츠 저장	`POST  /api/content`
 
+컨텐츠 수정	`PUT  /api/content/{contentId}`
 
+컨텐츠 삭제	`DELETE  /api/content/{contentId}`
 
-#
+댓글 요청	`GET  /api/content/{contentId}/comment`
 
-> ### QueryDSL을 사용한 동적 쿼리 생성(검색 , 페이징)
+댓글 저장	`POST  /api/content/{contentId}/comment`
 
 
+### Tag
 
-#
+태그 저장	`POST  /api/tag`
+
+태그리스트 요청	`GET  /api/tags`
+
+---
+
