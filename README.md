@@ -34,11 +34,7 @@ Jenkins (구축 서버) , Docker (배포 서버) 를 통해 CI/CD가 구현되�
 ## 1. 프로젝트 구조
 #
 
-
-
-
-
-
+<img width="791" alt="스크린샷 2022-09-07 오후 11 17 31" src="https://user-images.githubusercontent.com/51349774/188903227-5014a683-320a-405c-a73f-ff51d5c7a12f.png">
 
 
 
