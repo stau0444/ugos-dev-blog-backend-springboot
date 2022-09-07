@@ -76,21 +76,10 @@ public class ContentController {
 
     @GetMapping("/content/{id}/comment")
     public List<CommentResp> getCommentList(@PathVariable Long id){
-        List<CommentDto> commentList = commentRepository.getComment(id);
-        return commentList.stream().map((c) ->
-                new CommentResp(
-                        c.getCommentId(),
-                        c.getBody(),
-                        c.getRepliedCommentId(),
-                        c.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 hh:mm:ss")),
-                        c.getReplyTo(),
-                        c.getUserName(),
-                        c.getProfileUrl())
-                ).collect(Collectors.toList());
+        return contentService.getComments(id);
     }
     @PostMapping("/content/{id}/comment")
     public void addComment(@PathVariable Long id, @RequestBody CommentReq commentReq){
         contentService.addComment(id,commentReq);
-
     }
 }

@@ -18,16 +18,26 @@
 ![로고 이미지](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FEACL2%2FbtrnfBYVtgA%2FL4dVWu9Dv4RddOZrhwxBrK%2Fimg.png)
 
 
-공부하는 것들을 정리해 놓을 수 있는 저만의 블로그를 만들어 보고 싶어 시작한 프로젝트입니다. Spring-boot 기반으로 구현되었으며 , 현재 AWS EC2 인스턴스에 배포되어 있습니다 .
+공부하는 것들을 정리해 놓을 수 있는 저만의 블로그를 만들어 보고 싶어 시작한 프로젝트입니다. Spring-boot 기반으로 구현되었으며 , 
+Jenkins (구축 서버) , Docker (배포 서버) 를 통해 CI/CD가 구현되어 있습니다.        
 <br/>
 
 > API Sever URL
 
-<br/>
-
 - https://www.ugosdevblog.com
 
 <br/>
+
+---
+
+#
+## 1. 프로젝트 구조
+#
+
+
+
+
+
 
 
 
@@ -35,20 +45,19 @@
 #
 ## 2. 사용 라이브러리
 #
-
 <br/>
 
-Back-end Stack||
---|--  
-Language | JAVA 11
-Framwork | Spring-boot 2.4.2
-Library| Spring-Security ,Spring-data-JPA
-Web Container | Tomcat 9.0.41
-Database | AWS RDS MariaDB 10.5.12
-Test DB | H2 Database
-Hosting | AWS EC2 Ubuntu Server
-Version Control| Git , GitHub
-etc | QueryDsl , Javax Mail , Lombock
+|                 |Back-end Stack|
+|-----------------|--------|  
+ Language        | JAVA 11
+ Framwork        | Spring-boot 2.4.2
+ Library         | Spring-Security ,Spring-data-JPA
+ Web Container   | Tomcat 9.0.41
+ Database        | AWS RDS MariaDB 10.5.12
+ Test DB         | H2 Database
+ Hosting         | AWS EC2 Ubuntu Server
+ Version Control | Git , GitHub
+ etc             | QueryDsl , Javax Mail , Lombock
 
 
 #

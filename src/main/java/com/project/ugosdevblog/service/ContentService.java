@@ -26,7 +26,6 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ContentService {
 
-    private final ContentPagingRepository pagingRepository;
     private final ContentRepository contentRepository;
     private final TagRepository tagRepository;
     private final UserRepository userRepository;
@@ -143,5 +142,19 @@ public class ContentService {
                     .build();
         }
         commentRepository.save(comment);
+    }
+
+    public List<CommentResp> getComments(Long id) {
+        List<CommentDto> commentList = commentRepository.getComment(id);
+        return commentList.stream().map((c) ->
+                new CommentResp(
+                        c.getCommentId(),
+                        c.getBody(),
+                        c.getRepliedCommentId(),
+                        c.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 hh:mm:ss")),
+                        c.getReplyTo(),
+                        c.getUserName(),
+                        c.getProfileUrl())
+        ).collect(Collectors.toList());
     }
 }
