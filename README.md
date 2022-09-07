@@ -5,18 +5,17 @@
 ### 목차
 
 ---
+[1. 프로젝트 설명](#1-프로젝트-설명)
 
-#### [1.프로젝트 설명](#1.-프로젝트-설명)
+[2. 개발 환경](#2-개발-환경)
 
-#### [2. 개발 환경](#2.-개발-환경)
+[3. 프로젝트 구조](#3-프로젝트-구조)
 
-#### [3. 프로젝트 구조](#3.-프로젝트-구조)
+[4. ERD](#4-ERD)
 
-#### [4. ERD](#4.-ERD)
+[5. 주요 구현 기능](#5-주요-구현-기능)
 
-#### [5. API 명세](#5.-API-명세)
-
-#### [6. 주요 기능](#6.-주요-기능)
+[6. 요청 API 명세](#6-요청-API-명세)
 
 ---
 
@@ -62,7 +61,7 @@
 
 ## 4. ERD
 
-<img width="725" alt="스크린샷 2022-09-08 오전 1 07 01" src="https://user-images.githubusercontent.com/51349774/188929378-4e113a53-1a5b-4c8b-868f-87d6b6536b21.png">
+<img width="541" alt="스크린샷 2022-09-08 오전 1 07 01" src="https://user-images.githubusercontent.com/51349774/188929378-4e113a53-1a5b-4c8b-868f-87d6b6536b21.png">
 
 ---
 
@@ -77,7 +76,7 @@
 
 ---
 
-## 6.API 명세
+## 6. API 명세
 
 ### User
 
@@ -97,30 +96,30 @@
 
 ### Content
 
-컨텐츠 검색	`GET  /api/content/search`
+컨텐츠 검색	- `GET  /api/content/search`
 
-단일 컨텐츠	`GET  /api/content/{contentId}`
+단일 컨텐츠	- `GET  /api/content/{contentId}`
 
-컨텐츠 리스트	`GET  /api/contents`
+컨텐츠 리스트 - `GET  /api/contents`
 
-검색어 리스트	`GET  /api/whitelist`
+검색어 리스트 -	`GET  /api/whitelist`
 
-컨텐츠 저장	`POST  /api/content`
+컨텐츠 저장	- `POST  /api/content`
 
-컨텐츠 수정	`PUT  /api/content/{contentId}`
+컨텐츠 수정	- `PUT  /api/content/{contentId}`
 
-컨텐츠 삭제	`DELETE  /api/content/{contentId}`
+컨텐츠 삭제	- `DELETE  /api/content/{contentId}`
 
-댓글 요청	`GET  /api/content/{contentId}/comment`
+댓글 요청 - `GET  /api/content/{contentId}/comment`
 
-댓글 저장	`POST  /api/content/{contentId}/comment`
+댓글 저장 - `POST  /api/content/{contentId}/comment`
 
 
 ### Tag
 
-태그 저장	`POST  /api/tag`
+태그 저장 - `POST  /api/tag`
 
-태그리스트 요청	`GET  /api/tags`
+태그리스트 요청 - `GET  /api/tags`
 
 ---
 
