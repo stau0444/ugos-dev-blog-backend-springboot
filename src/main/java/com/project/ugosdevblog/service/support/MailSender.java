@@ -50,7 +50,7 @@ public class MailSender {
                     .append("</span>")
                     .append("님 안녕하세요 <span style=\"color:lightgray\">Ugos Dev blog </span>입니다</h1>\n");
             contents.append("<h2 style=\"color:rgb(47, 255, 82); padding:0 10px;  background:royalblue;\"> 새로운 컨텐츠가 추가되었습니다!</h2>");
-            contents.append("<a style=\" text-align:center; color:rgb(27, 41, 20);font-size:15px; border-radius: 30px; \" href=\"http://localhost:3000/content/")
+            contents.append("<a style=\" text-align:center; color:rgb(27, 41, 20);font-size:15px; border-radius: 30px; \" href=\"https://blog.ugosdev.com/content/")
                     .append(msgProps.get("contentId"))
                     .append("\"> 제목: ")
                     .append(msgProps.get("contentTitle"))

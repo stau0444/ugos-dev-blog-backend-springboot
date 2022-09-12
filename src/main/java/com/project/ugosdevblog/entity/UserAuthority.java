@@ -3,10 +3,7 @@ package com.project.ugosdevblog.entity;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.IdClass;
+import javax.persistence.*;
 
 @Entity
 @Getter
@@ -18,6 +15,7 @@ import javax.persistence.IdClass;
 public class UserAuthority implements GrantedAuthority {
 
     @Id
+    @GeneratedValue
     @Column(name = "user_id")
     private Long id;
 
