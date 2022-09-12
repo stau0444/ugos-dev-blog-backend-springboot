@@ -16,7 +16,7 @@ public interface UserRepository extends JpaRepository<User,Long> {
 
     Optional<User> findByEmail(String email);
 
-    @Query(value = "select new com.project.ugosdevblog.service.SubscribeUserMsgProps(u.username,u.id,u.email) from User u where u.emailSubscribe = true")
+    @Query(value = "select new com.project.ugosdevblog.service.support.SubscribeUserMsgProps(u.username,u.id,u.email) from User u where u.emailSubscribe = true")
     List<SubscribeUserMsgProps> findByEmailSubscribe();
 
 }
