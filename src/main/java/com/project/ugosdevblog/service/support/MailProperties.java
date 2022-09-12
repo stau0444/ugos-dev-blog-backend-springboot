@@ -1,4 +1,4 @@
-package com.project.ugosdevblog.service;
+package com.project.ugosdevblog.service.support;
 
 import lombok.Getter;
 import lombok.Setter;

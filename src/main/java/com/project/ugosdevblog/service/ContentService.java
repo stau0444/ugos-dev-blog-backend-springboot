@@ -6,6 +6,9 @@ import com.project.ugosdevblog.entity.Content;
 import com.project.ugosdevblog.entity.Tag;
 import com.project.ugosdevblog.entity.User;
 import com.project.ugosdevblog.repository.*;
+import com.project.ugosdevblog.service.support.MailCommand;
+import com.project.ugosdevblog.service.support.MailSender;
+import com.project.ugosdevblog.service.support.SubscribeUserMsgProps;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -15,10 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -30,6 +30,8 @@ public class ContentService {
     private final TagRepository tagRepository;
     private final UserRepository userRepository;
     private final CommentRepository commentRepository;
+
+    private final MailSender mailSender;
 
     public Page<ContentResp> getContents(String category, Pageable pageable){
         Page<Content> contentList = null;
@@ -89,7 +91,16 @@ public class ContentService {
                 .article(reqData.getArticle())
                 .build();
 
-        contentRepository.save(newContent);
+        Content savedContent = contentRepository.save(newContent);
+        List<SubscribeUserMsgProps> subscribedUser = userRepository.findByEmailSubscribe();
+        for (SubscribeUserMsgProps userInfo : subscribedUser) {
+            Map<String, String> msgProps = new HashMap<>();
+            msgProps.put("username",userInfo.getUsername());
+            msgProps.put("contentId",String.valueOf(savedContent.getContentId()));
+            msgProps.put("contentTitle",savedContent.getTitle());
+            mailSender.sendMail(userInfo.getEmail(), MailCommand.SUBSCRIBE,msgProps);
+        }
+
     }
 
     public void updateContent(Long id, ContentReq reqData) {
