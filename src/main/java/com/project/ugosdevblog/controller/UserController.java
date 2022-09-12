@@ -21,7 +21,6 @@ public class UserController {
     private final UserService userService;
     private final PasswordEncoder encoder;
 
-
     @GetMapping("/email-verify")
     public Integer emailVerify(String email){
         return userService.emailVerify(email);

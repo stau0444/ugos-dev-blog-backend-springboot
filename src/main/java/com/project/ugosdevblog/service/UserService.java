@@ -7,6 +7,8 @@ import com.project.ugosdevblog.exception.ExistUserException;
 import com.project.ugosdevblog.exception.NotExistUserException;
 import com.project.ugosdevblog.repository.AuthRepository;
 import com.project.ugosdevblog.repository.UserRepository;
+import com.project.ugosdevblog.service.support.MailCommand;
+import com.project.ugosdevblog.service.support.MailSender;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -15,11 +17,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.mail.*;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
-import javax.mail.internet.MimeUtility;
-import java.io.UnsupportedEncodingException;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -69,17 +66,17 @@ public class UserService implements UserDetailsService {
     public void findUserId(String email) {
         Optional<User> userByEmail = userRepository.findByEmail(email);
         User user = userByEmail.orElseThrow(() -> new NotExistUserException("존재하지 않는 유저입니다."));
-        sendMailToUser(email,user.getUsername());
+        Map<String, String> messageProps = new HashMap<>();
+        messageProps.put("username",user.getUsername());
+        mailSender.sendMail(email, MailCommand.FIND,messageProps);
     }
     public int sendVerifyNum(String email,String username){
         Optional<User> user = userRepository.findByUsername(username);
         user.orElseThrow(()->new NotExistUserException("유저가 존재하지 않습니다"));
-        return sendMailToUser(email, "nouser");
+        Map<String, String> msgProps = new HashMap<>();
+        return mailSender.sendMail(email, MailCommand.SIGNUP,msgProps);
     }
 
-    public int sendMailToUser(String userMail,String userName){
-        return mailSender.sendMail(userMail,userName);
-    }
 
     public void changePwd(String username , String pwd ,PasswordEncoder encoder) {
         Optional<User> byUsername = userRepository.findByUsername(username);
@@ -92,6 +89,6 @@ public class UserService implements UserDetailsService {
         if(byEmail.isPresent()){
             throw  new ExistUserException("해당 이메일로 이미 가입된 유저가 존재합니다.");
         }
-        return sendMailToUser(email, "nouser");
+        return mailSender.sendMail(email, MailCommand.SIGNUP,new HashMap<>());
     }
 }

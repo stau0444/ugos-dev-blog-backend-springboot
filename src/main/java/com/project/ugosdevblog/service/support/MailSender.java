@@ -1,6 +1,7 @@
-package com.project.ugosdevblog.service;
+package com.project.ugosdevblog.service.support;
 
-import lombok.NoArgsConstructor;
+import com.project.ugosdevblog.service.support.MailCommand;
+import com.project.ugosdevblog.service.support.MailProperties;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -10,6 +11,7 @@ import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeUtility;
 import java.io.UnsupportedEncodingException;
 import java.util.Date;
+import java.util.Map;
 import java.util.Properties;
 import java.util.Random;
 
@@ -20,13 +22,13 @@ public class MailSender {
     private  final MailProperties mailProperties;
 
 
-    public int sendMail(String userMail, String userName){
+    public int sendMail(String userMail, MailCommand command , Map<String,String> msgProps){
         Random random = new Random();
 
         int verifyNum = random.nextInt(99999);
 
         StringBuilder contents = new StringBuilder();
-        if(userName.equals("nouser")){
+        if(command == MailCommand.SIGNUP){
             contents.append("<div style=\"width: 50%; padding:20px ;border: 1px solid black; background-color: whitesmoke; border-radius: 30px; margin: 20px 20px;\">\n");
             contents.append("<h1 style=\"color:white; background-color:coral ;margin-top:20px;\">안녕하세요 Ugos Dev blog에</h1>\n");
             contents.append("<h2 style=\"color:rgb(47, 255, 82); background:royalblue;\">요청하신 인증번호입니다.</h2>");
@@ -34,11 +36,26 @@ public class MailSender {
             contents.append("<p style=\"  text-align:center; color:rgb(27, 41, 20);font-size:30px;  border-radius: 30px; border:2px solid rgb(47, 255, 82)\">").append(verifyNum).append("</p>");
             contents.append("<p style=\"margin:20px; font-family:monospace; font-weight: 700;\">UGO's Dev Blog </p>");
             contents.append("</div>");
-        }else {
+        }else if(command == MailCommand.FIND){
             contents.append("<div style=\"width: 50%; padding:20px ;border: 1px solid black; background-color: whitesmoke; border-radius: 30px; margin: 20px 20px;\">\n");
             contents.append("<h1 style=\"color:white; background-color:coral ;margin-top:20px;\">안녕하세요 Ugos Dev blog 입니다</h1>\n");
             contents.append("<h2 style=\"color:rgb(47, 255, 82); background:royalblue;\">회원님의 아이디는</h2>");
-            contents.append("<p style=\" text-align:center; color:rgb(27, 41, 20);font-size:30px; border-radius: 30px; border:2px solid rgb(47, 255, 82)\">").append(userName).append(" 입니다.</p>");
+            contents.append("<p style=\" text-align:center; color:rgb(27, 41, 20);font-size:30px; border-radius: 30px; border:2px solid rgb(47, 255, 82)\">").append(msgProps.get("username")).append(" 입니다.</p>");
+            contents.append("<p style=\"margin:20px; font-family:monospace; font-weight: 700;\">UGO's Dev Blog </p>");
+            contents.append("</div>");
+        }else {
+            contents.append("<div style=\"width: 50%; padding:20px ;border: 1px solid black; background-color: whitesmoke; border-radius: 30px; margin: 20px 20px;\">\n");
+            contents.append("<h1 style=\"color:white; background-color:coral; padding:0 10px; margin-top:20px;\"><span style=\"color:lightgray\">")
+                    .append(msgProps.get("username"))
+                    .append("</span>")
+                    .append("님 안녕하세요 <span style=\"color:lightgray\">Ugos Dev blog </span>입니다</h1>\n");
+            contents.append("<h2 style=\"color:rgb(47, 255, 82); padding:0 10px;  background:royalblue;\"> 새로운 컨텐츠가 추가되었습니다!</h2>");
+            contents.append("<a style=\" text-align:center; color:rgb(27, 41, 20);font-size:15px; border-radius: 30px; \" href=\"http://localhost:3000/content/")
+                    .append(msgProps.get("contentId"))
+                    .append("\"> 제목: ")
+                    .append(msgProps.get("contentTitle"))
+                    .append("</a>");
+            contents.append("<p style=\" color:gray; margin:10px; font-family:monospace;\">링크를 클릭하면 해당 글로 이동합니다. </p>");
             contents.append("<p style=\"margin:20px; font-family:monospace; font-weight: 700;\">UGO's Dev Blog </p>");
             contents.append("</div>");
         }

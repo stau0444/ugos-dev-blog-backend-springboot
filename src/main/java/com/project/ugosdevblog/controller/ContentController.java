@@ -61,6 +61,7 @@ public class ContentController {
 
     @PostMapping("/content")
     public void addContent(@RequestBody ContentReq reqData){
+        System.out.println("try save content");
         contentService.saveContent(reqData);
     }
 
