@@ -1,4 +1,18 @@
 spring:
+  banner:
+    image:
+      location: classpath:banner.png
+      width: 90
+      height: 15
+      bit-depth: 8
+      margin: 0
   config:
-    activate:
-      on-profile: prod
+    import:
+      - classpath:database.yml
+      - classpath:mail.yml
+
+server:
+  port: 8080
+
+
+

@@ -1,0 +1,6 @@
+mail:
+  admin-email: ugosdevblog@gmail.com
+  admin-pwd : tggxivvagqbqjzky
+  subject: UGO'S Dev Blog에 요청하신 인증번호입니다
+  from-mail: ugosdevblog@gmail.com
+  from-name: Ugo's Dev blog
