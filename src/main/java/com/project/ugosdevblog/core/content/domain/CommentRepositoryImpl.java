@@ -30,7 +30,7 @@ public class CommentRepositoryImpl implements CommentRepositoryCustom{
         )).from(comment)
                 .join(user)
                 .on(comment.user.id.eq(user.id))
-                .orderBy(comment.repliedCommentId.asc(), comment.createAt.asc())
+                .orderBy(comment.createAt.desc(),comment.repliedCommentId.asc())
                 .where(comment.content.contentId.eq(contentId))
                 .fetchResults().getResults();
 
