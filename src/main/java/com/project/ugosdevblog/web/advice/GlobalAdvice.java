@@ -1,8 +1,8 @@
 package com.project.ugosdevblog.web.advice;
 
-import com.project.ugosdevblog.core.domain.user.ErrorMessage;
-import com.project.ugosdevblog.core.domain.user.ExistUserException;
-import com.project.ugosdevblog.core.domain.user.NotExistUserException;
+import com.project.ugosdevblog.core.user.domain.ErrorMessage;
+import com.project.ugosdevblog.core.user.domain.ExistUserException;
+import com.project.ugosdevblog.core.user.domain.NotExistUserException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

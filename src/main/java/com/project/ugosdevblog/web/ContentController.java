@@ -1,8 +1,9 @@
 package com.project.ugosdevblog.web;
 
-import com.project.ugosdevblog.core.domain.comment.CommentRepository;
-import com.project.ugosdevblog.core.domain.content.ContentRepository;
-import com.project.ugosdevblog.core.application.ContentService;
+import com.project.ugosdevblog.core.content.application.CommentManager;
+import com.project.ugosdevblog.core.content.application.ContentManager;
+import com.project.ugosdevblog.core.content.domain.CommentRepository;
+import com.project.ugosdevblog.core.content.domain.ContentRepository;
 import com.project.ugosdevblog.web.dto.commnet.CommentReq;
 import com.project.ugosdevblog.web.dto.commnet.CommentResp;
 import com.project.ugosdevblog.web.dto.content.ContentReq;
@@ -25,26 +26,24 @@ import java.util.List;
 public class ContentController {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
-    private final ContentRepository contentRepository;
-    private final ContentService contentService;
-    private final CommentRepository commentRepository;
+    private final ContentManager contentManager;
+    private final CommentManager commentManager;
 
 
 
     @GetMapping("/content/search")
     public Page<SearchResp> getSearchList(@RequestParam String keyword, Pageable pageable){
-        logger.info("github hook test");
-        return contentService.search(keyword,pageable);
+        return contentManager.search(keyword,pageable);
     }
 
     @GetMapping("/content/{id}")
     public ContentResp getContent(@PathVariable Long id){
-        return contentService.getContent(id);
+        return contentManager.getContent(id);
     }
 
     @GetMapping("/contents")
     public Page<ContentResp> getContents(@RequestParam(defaultValue = "") String category  ,Pageable pageable ){
-        return  contentService.getContents(category,pageable);
+        return  contentManager.getContents(category,pageable);
     }
 
 
@@ -63,26 +62,25 @@ public class ContentController {
 
     @PostMapping("/content")
     public void addContent(@RequestBody ContentReq reqData){
-        System.out.println("try save content");
-        contentService.saveContent(reqData);
+        contentManager.saveContent(reqData);
     }
 
     @PutMapping("/content/{id}")
     public void updateContent(@PathVariable Long id,@RequestBody ContentReq reqData){
-       contentService.updateContent(id,reqData);
+        contentManager.updateContent(id,reqData);
     }
 
     @DeleteMapping("content/{id}")
     public void deleteContent(@PathVariable Long id){
-        contentRepository.deleteById(id);
+        contentManager.deleteById(id);
     }
 
     @GetMapping("/content/{id}/comment")
     public List<CommentResp> getCommentList(@PathVariable Long id){
-        return contentService.getComments(id);
+        return commentManager.getComments(id);
     }
     @PostMapping("/content/{id}/comment")
     public void addComment(@PathVariable Long id, @RequestBody CommentReq commentReq){
-        contentService.addComment(id,commentReq);
+        commentManager.addComment(id,commentReq);
     }
 }

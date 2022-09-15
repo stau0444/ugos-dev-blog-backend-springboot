@@ -1,7 +1,7 @@
 package com.project.ugosdevblog.web;
 
-import com.project.ugosdevblog.core.domain.tag.Tag;
-import com.project.ugosdevblog.core.domain.tag.TagRepository;
+import com.project.ugosdevblog.core.content.domain.Tag;
+import com.project.ugosdevblog.core.content.domain.TagRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
