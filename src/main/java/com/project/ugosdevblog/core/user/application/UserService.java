@@ -1,12 +1,9 @@
 package com.project.ugosdevblog.core.user.application;
 
-import com.project.ugosdevblog.web.dto.user.UpdateUserReq;
-import com.project.ugosdevblog.core.user.domain.User;
+import com.project.ugosdevblog.core.user.domain.*;
+import com.project.ugosdevblog.web.user.dto.UpdateUserReq;
 import com.project.ugosdevblog.core.auth.UserAuthority;
-import com.project.ugosdevblog.core.user.domain.ExistUserException;
-import com.project.ugosdevblog.core.user.domain.NotExistUserException;
 import com.project.ugosdevblog.core.auth.AuthRepository;
-import com.project.ugosdevblog.core.user.domain.UserRepository;
 import com.project.ugosdevblog.core.content.infra.MailCommand;
 import com.project.ugosdevblog.core.content.infra.MailSender;
 import lombok.RequiredArgsConstructor;
@@ -65,14 +62,14 @@ public class UserService implements UserDetailsService {
 
     public void findUserId(String email) {
         Optional<User> userByEmail = userRepository.findByEmail(email);
-        User user = userByEmail.orElseThrow(() -> new NotExistUserException("존재하지 않는 유저입니다."));
+        User user = userByEmail.orElseThrow(UserNotFoundException::new);
         Map<String, String> messageProps = new HashMap<>();
         messageProps.put("username",user.getUsername());
         mailSender.sendMail(email, MailCommand.FIND,messageProps);
     }
     public int sendVerifyNum(String email,String username){
         Optional<User> user = userRepository.findByUsername(username);
-        user.orElseThrow(()->new NotExistUserException("유저가 존재하지 않습니다"));
+        user.orElseThrow(UserNotFoundException::new);
         Map<String, String> msgProps = new HashMap<>();
         return mailSender.sendMail(email, MailCommand.SIGNUP,msgProps);
     }

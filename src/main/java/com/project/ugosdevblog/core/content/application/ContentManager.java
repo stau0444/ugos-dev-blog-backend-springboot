@@ -1,14 +1,11 @@
 package com.project.ugosdevblog.core.content.application;
 
-import com.project.ugosdevblog.core.content.domain.Content;
-import com.project.ugosdevblog.core.content.domain.ContentRepository;
+import com.project.ugosdevblog.core.content.domain.*;
 import com.project.ugosdevblog.core.content.infra.MailCommand;
 import com.project.ugosdevblog.core.content.infra.MailSender;
 import com.project.ugosdevblog.core.content.infra.SubscribeUserMsgProps;
-import com.project.ugosdevblog.core.content.domain.Tag;
-import com.project.ugosdevblog.core.content.domain.TagRepository;
 import com.project.ugosdevblog.core.user.domain.UserRepository;
-import com.project.ugosdevblog.web.dto.content.*;
+import com.project.ugosdevblog.web.content.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -113,7 +110,7 @@ public class ContentManager implements ContentEditor,ContentFinder{
         Set<Tag> selectedTags = reqData.getTags().stream().map(
                 tagRepository::findByTagName
         ).collect(Collectors.toSet());
-        Content content = contentOp.orElseThrow(()->new RuntimeException("아이디 잘못됨"));
+        Content content = contentOp.orElseThrow(ContentNotFoundException::new);
 
         content.setArticle(reqData.getArticle());
         content.setDescription(reqData.getDescription());

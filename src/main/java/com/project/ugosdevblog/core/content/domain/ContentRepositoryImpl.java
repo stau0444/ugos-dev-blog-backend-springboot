@@ -1,7 +1,7 @@
 package com.project.ugosdevblog.core.content.domain;
 
 
-import com.project.ugosdevblog.web.dto.content.*;
+import com.project.ugosdevblog.web.content.dto.*;
 import com.querydsl.core.QueryResults;
 import com.querydsl.jpa.JPQLQueryFactory;
 import lombok.RequiredArgsConstructor;

@@ -41,6 +41,9 @@ dependencies {
     implementation group: 'com.querydsl', name: 'querydsl-apt', version: querydslVersion
     implementation group: 'com.querydsl', name: 'querydsl-core', version: querydslVersion
 
+    //swagger boot starter
+    implementation group: 'io.springfox', name: 'springfox-boot-starter', version: '3.0.0'
+
     annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
     annotationProcessor group: 'com.querydsl', name: 'querydsl-apt', version: querydslVersion
     annotationProcessor group: 'com.querydsl', name: 'querydsl-apt', version: querydslVersion, classifier: 'jpa'

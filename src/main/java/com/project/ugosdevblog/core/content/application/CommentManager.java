@@ -1,14 +1,12 @@
 package com.project.ugosdevblog.core.content.application;
 
-import com.project.ugosdevblog.core.content.domain.Comment;
-import com.project.ugosdevblog.core.content.domain.CommentRepository;
-import com.project.ugosdevblog.core.content.domain.Content;
-import com.project.ugosdevblog.core.content.domain.ContentRepository;
+import com.project.ugosdevblog.core.content.domain.*;
 import com.project.ugosdevblog.core.user.domain.User;
+import com.project.ugosdevblog.core.user.domain.UserNotFoundException;
 import com.project.ugosdevblog.core.user.domain.UserRepository;
-import com.project.ugosdevblog.web.dto.commnet.CommentDto;
-import com.project.ugosdevblog.web.dto.commnet.CommentReq;
-import com.project.ugosdevblog.web.dto.commnet.CommentResp;
+import com.project.ugosdevblog.web.content.dto.comment.CommentDto;
+import com.project.ugosdevblog.web.content.dto.comment.CommentReq;
+import com.project.ugosdevblog.web.content.dto.comment.CommentResp;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,8 +33,8 @@ public class CommentManager implements CommentEditor,CommentFinder {
     public void addComment(Long id, CommentReq commentReq) {
         Long nextVal = commentRepository.getNextVal();
         Optional<Content> byId = contentRepository.findById(id);
-        Content content = byId.orElseThrow(RuntimeException::new);
-        User user =  userRepository.findById(commentReq.getUserId()).orElseThrow(RuntimeException::new);
+        Content content = byId.orElseThrow(ContentNotFoundException::new);
+        User user =  userRepository.findById(commentReq.getUserId()).orElseThrow(UserNotFoundException::new);
         Comment comment = null;
         if(commentReq.getRepliedCommentId()==null){
             comment = Comment.builder()
@@ -49,7 +47,7 @@ public class CommentManager implements CommentEditor,CommentFinder {
                     .build();
         }else{
             Optional<Comment> isReplyTo = commentRepository.findById(commentReq.getRepliedCommentId());
-            Comment repliedComment = isReplyTo.orElseThrow(RuntimeException::new);
+            Comment repliedComment = isReplyTo.orElseThrow(()->new CommentNotFoundException("댓글을 찾을 수 없습니다"));
             String replyTo = repliedComment.getUser().getUsername();
             Long repliedCommentId = repliedComment.getRepliedCommentId();
             comment = Comment.builder()

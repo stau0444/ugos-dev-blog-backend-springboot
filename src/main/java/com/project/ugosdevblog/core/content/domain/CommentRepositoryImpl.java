@@ -1,7 +1,7 @@
 package com.project.ugosdevblog.core.content.domain;
 
-import com.project.ugosdevblog.web.dto.commnet.CommentDto;
-import com.project.ugosdevblog.web.dto.commnet.QCommentDto;
+import com.project.ugosdevblog.web.content.dto.comment.CommentDto;
+import com.project.ugosdevblog.web.content.dto.comment.QCommentDto;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 
@@ -30,7 +30,10 @@ public class CommentRepositoryImpl implements CommentRepositoryCustom{
         )).from(comment)
                 .join(user)
                 .on(comment.user.id.eq(user.id))
-                .orderBy(comment.createAt.desc(),comment.repliedCommentId.asc())
+                .orderBy(
+                        comment.repliedCommentId.desc(),
+                        comment.replyTo.asc(),
+                        comment.createAt.desc())
                 .where(comment.content.contentId.eq(contentId))
                 .fetchResults().getResults();
 

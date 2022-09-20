@@ -6,6 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 import javax.persistence.EntityManager;
 
@@ -21,5 +22,9 @@ public class UgosdevblogApplication {
     @Bean
     public JPAQueryFactory jpaQueryFactory(EntityManager em){
         return new JPAQueryFactory(em);
+    }
+    @Bean
+    public InternalResourceViewResolver defaultViewResolver() {
+        return new InternalResourceViewResolver();
     }
 }

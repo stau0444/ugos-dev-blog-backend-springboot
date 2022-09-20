@@ -1,7 +1,7 @@
 package com.project.ugosdevblog.core.content.application;
 
-import com.project.ugosdevblog.web.dto.content.ContentResp;
-import com.project.ugosdevblog.web.dto.content.SearchResp;
+import com.project.ugosdevblog.web.content.dto.ContentResp;
+import com.project.ugosdevblog.web.content.dto.SearchResp;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

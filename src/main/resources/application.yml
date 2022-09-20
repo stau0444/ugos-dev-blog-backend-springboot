@@ -1,7 +1,7 @@
 spring:
   banner:
     image:
-      location: classpath:banner.png
+      location: classpath:static/banner.png
       width: 90
       height: 15
       bit-depth: 8
@@ -10,9 +10,7 @@ spring:
     import:
       - classpath:database.yml
       - classpath:mail.yml
-
 server:
   port: 8080
-
 
 

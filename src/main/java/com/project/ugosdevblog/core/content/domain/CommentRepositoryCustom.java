@@ -1,6 +1,6 @@
 package com.project.ugosdevblog.core.content.domain;
 
-import com.project.ugosdevblog.web.dto.commnet.CommentDto;
+import com.project.ugosdevblog.web.content.dto.comment.CommentDto;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

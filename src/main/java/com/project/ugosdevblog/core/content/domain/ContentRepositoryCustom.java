@@ -1,9 +1,9 @@
 package com.project.ugosdevblog.core.content.domain;
 
-import com.project.ugosdevblog.web.dto.content.ContentResp;
-import com.project.ugosdevblog.web.dto.content.NextContentResp;
-import com.project.ugosdevblog.web.dto.content.PrevContentResp;
-import com.project.ugosdevblog.web.dto.content.SearchResp;
+import com.project.ugosdevblog.web.content.dto.ContentResp;
+import com.project.ugosdevblog.web.content.dto.NextContentResp;
+import com.project.ugosdevblog.web.content.dto.PrevContentResp;
+import com.project.ugosdevblog.web.content.dto.SearchResp;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;

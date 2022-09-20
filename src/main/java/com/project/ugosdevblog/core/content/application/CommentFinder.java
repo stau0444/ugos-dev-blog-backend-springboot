@@ -1,6 +1,6 @@
 package com.project.ugosdevblog.core.content.application;
 
-import com.project.ugosdevblog.web.dto.commnet.CommentResp;
+import com.project.ugosdevblog.web.content.dto.comment.CommentResp;
 
 import java.util.List;
 
