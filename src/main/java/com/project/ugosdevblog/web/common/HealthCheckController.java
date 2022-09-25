@@ -1,5 +1,6 @@
 package com.project.ugosdevblog.web.common;
 
+import io.swagger.annotations.Api;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Locale;
 
+@Api(value = "aws healthCheck API 정보를 제공하는 Controller")
 @RestController
 public class HealthCheckController {
 

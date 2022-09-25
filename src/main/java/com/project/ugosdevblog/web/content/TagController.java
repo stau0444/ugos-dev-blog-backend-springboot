@@ -2,12 +2,14 @@ package com.project.ugosdevblog.web.content;
 
 import com.project.ugosdevblog.core.content.domain.Tag;
 import com.project.ugosdevblog.core.content.domain.TagRepository;
+import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Api(value = "Tag API 정보를 제공하는 Controller")
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor

@@ -20,6 +20,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
 
 @EnableWebSecurity(debug = false)
 @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -58,6 +60,7 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
                 })
                 .addFilterAt(loginFilter , UsernamePasswordAuthenticationFilter.class)
                 .addFilterAt(checkFilter , BasicAuthenticationFilter.class)
+                .cors().configurationSource(new CustomCorsConfigureSource())
         ;
 
     }
