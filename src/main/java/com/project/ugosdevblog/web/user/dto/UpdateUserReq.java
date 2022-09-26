@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 @Data
 @AllArgsConstructor
@@ -18,6 +19,10 @@ public class UpdateUserReq {
     private String email;
     @ApiModelProperty(value = "이메일 구독여부")
     private boolean emailSubscribe;
-    @ApiModelProperty(value = "s3에 저장된 프로파일 이미지 url")
-    private String profileUrl;
+    @ApiModelProperty(value = "변경할 이미지 파일")
+    private MultipartFile profile;
+    @ApiModelProperty(value = "변경 이전 이미지 url")
+    private String imageUrlBeforeUpdate;
+
+
 }

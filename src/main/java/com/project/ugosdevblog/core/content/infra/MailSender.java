@@ -8,10 +8,7 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeUtility;
 import java.io.UnsupportedEncodingException;
-import java.util.Date;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Random;
+import java.util.*;
 
 @Component
 @RequiredArgsConstructor
@@ -100,4 +97,13 @@ public class MailSender {
         return verifyNum;
     }
 
+    public void sendMailToSubscriber(List<SubscribeUserMsgProps> subscribedUser,String title,Long contentId) {
+        for (SubscribeUserMsgProps userInfo : subscribedUser) {
+            Map<String, String> msgProps = new HashMap<>();
+            msgProps.put("username",userInfo.getUsername());
+            msgProps.put("contentId",String.valueOf(contentId));
+            msgProps.put("contentTitle",title);
+            sendMail(userInfo.getEmail(), MailCommand.SUBSCRIBE,msgProps);
+        }
+    }
 }

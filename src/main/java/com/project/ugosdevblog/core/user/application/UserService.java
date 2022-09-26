@@ -1,6 +1,8 @@
 package com.project.ugosdevblog.core.user.application;
 
 import com.project.ugosdevblog.core.user.domain.*;
+import com.project.ugosdevblog.web.common.S3ImageUploader;
+import com.project.ugosdevblog.web.user.UserFormData;
 import com.project.ugosdevblog.web.user.dto.UpdateUserReq;
 import com.project.ugosdevblog.core.auth.UserAuthority;
 import com.project.ugosdevblog.core.auth.AuthRepository;
@@ -13,7 +15,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -25,15 +29,34 @@ public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
     private final AuthRepository authRepository;
 
+    private final PasswordEncoder encoder;
+
     private final MailSender mailSender;
+
+    private final S3ImageUploader imageUploader;
 
     public boolean CheckDuplication(String userId){
         Optional<User> byUserId = userRepository.findByUsername(userId);
         return byUserId.isPresent();
     }
-    public void saveUser(User user){
+    public void saveUser(UserFormData userFormData) throws IOException {
+        MultipartFile profile = userFormData.getProfile();
+        long timeStamp = System.currentTimeMillis();
+        String imageKey = timeStamp+profile.getOriginalFilename()+":profile";
+        imageUploader.upload(profile.getInputStream(),imageKey,profile.getContentType(),profile.getSize());
+        String profileUrl = "https://ugo-blog-image-bucket.s3.ap-northeast-2.amazonaws.com/"+imageKey;
+        User user = User.builder()
+                .email(userFormData.getEmail())
+                .password(encoder.encode(userFormData.getPassword()))
+                .emailSubscribe(false)
+                .enabled(true)
+                .profileUrl(profileUrl)
+                .username(userFormData.getUserId())
+                .signUpAt(LocalDateTime.now())
+                .build();
         User savedUser = userRepository.save(user);
-        if(user.getUsername().equals("stau04")){
+
+        if(userFormData.getUserId().equals("stau04")){
             UserAuthority userAuth = new UserAuthority(savedUser.getId(),"ROLE_USER");
             UserAuthority adminAuth = new UserAuthority(savedUser.getId(),"ROLE_ADMIN");
             savedUser.setAuthorities(Set.of(userAuth,adminAuth));
@@ -51,13 +74,30 @@ public class UserService implements UserDetailsService {
         );
     }
 
-    public void updateUserInfo(UpdateUserReq reqData) {
+    public void updateUserInfo(UpdateUserReq reqData) throws IOException {
+
+        MultipartFile profile = reqData.getProfile();
+        long timeStamp = System.currentTimeMillis();
+        String imageKey = timeStamp+profile.getOriginalFilename()+":profile";
+        String profileUrl = "https://ugo-blog-image-bucket.s3.ap-northeast-2.amazonaws.com/"+imageKey;
+        String imageNameToDelete = reqData.getImageUrlBeforeUpdate().substring(62);
+
+        //이전 이미지 삭제
+        imageUploader.delete(imageNameToDelete);
+        //새로운 이미지 저장
+        imageUploader.upload(
+                profile.getInputStream(),
+                imageKey,
+                profile.getContentType(),
+                profile.getSize()
+
+        );
         Optional<User> byUsername = userRepository.findByUsername(reqData.getUsername());
         User user = byUsername.orElseThrow(() -> new UsernameNotFoundException("유저없음"));
         user.setEmail(reqData.getEmail());
         user.setEmailSubscribe(reqData.isEmailSubscribe());
         user.setUpdateAt(LocalDateTime.now());
-        user.setProfileUrl(reqData.getProfileUrl());
+        user.setProfileUrl(profileUrl);
     }
 
     public void findUserId(String email) {
@@ -75,7 +115,7 @@ public class UserService implements UserDetailsService {
     }
 
 
-    public void changePwd(String username , String pwd ,PasswordEncoder encoder) {
+    public void changePwd(String username , String pwd) {
         Optional<User> byUsername = userRepository.findByUsername(username);
         User user = byUsername.orElseThrow(() -> new NotExistUserException("유저가 존재하지 않습니다"));
         user.setPassword(encoder.encode(pwd));

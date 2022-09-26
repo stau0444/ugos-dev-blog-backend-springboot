@@ -16,6 +16,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -73,8 +74,12 @@ public class ContentController {
     }
 
     @PostMapping("/content")
-    public void addContent(@RequestBody ContentReq reqData){
-        contentManager.saveContent(reqData);
+    public void addContent(ContentReq reqData){
+        try {
+            contentManager.saveContent(reqData);
+        } catch (IOException e) {
+            throw new ContentCreateException();
+        }
     }
 
 
@@ -82,9 +87,13 @@ public class ContentController {
     public void updateContent(
             @ApiParam(value = "업데이트 컨텐츠 id")
             @PathVariable Long id,
-            @RequestBody ContentReq reqData
+            ContentReq reqData
     ){
-        contentManager.updateContent(id,reqData);
+        try {
+            contentManager.updateContent(id,reqData);
+        } catch (IOException e) {
+            throw new ContentUpdateException();
+        }
     }
 
     @DeleteMapping("content/{id}")

@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 
 @Data
@@ -19,6 +20,6 @@ public class UserPostReq {
     private String password;
     @ApiModelProperty(value = "유저 이메일")
     private String email;
-    @ApiModelProperty(value = "aws s3에 저장된 프로파일 이미지 주소")
-    private String profile;
+//    @ApiModelProperty(value = "aws s3에 저장된 프로파일 이미지 주소")
+//    private String profile;
 }

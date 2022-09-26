@@ -44,6 +44,12 @@ dependencies {
     //swagger boot starter
     implementation group: 'io.springfox', name: 'springfox-boot-starter', version: '3.0.0'
 
+    //aws s3 sdk BOM
+    implementation platform('com.amazonaws:aws-java-sdk-bom:1.12.307')
+
+    //aws s3 sdk
+    implementation 'com.amazonaws:aws-java-sdk-s3'
+
     annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
     annotationProcessor group: 'com.querydsl', name: 'querydsl-apt', version: querydslVersion
     annotationProcessor group: 'com.querydsl', name: 'querydsl-apt', version: querydslVersion, classifier: 'jpa'

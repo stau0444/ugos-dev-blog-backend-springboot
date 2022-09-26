@@ -2,6 +2,7 @@ package com.project.ugosdevblog.web.content.dto;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -24,8 +25,11 @@ public class ContentReq {
     @ApiModelProperty(value = "컨텐츠 관련 Tag" ,required = true)
     private List<String> tags;
 
-    @ApiModelProperty(value = "컨텐츠 thumbnail img" ,required = true)
-    private String imageUrl;
+    @ApiModelProperty(value = "이전 thumbnail img url" ,required = true)
+    private String imageBefore;
+
+    @ApiModelProperty(value = "변경될 thumbnail img file" ,required = true)
+    private MultipartFile image;
 
     @ApiModelProperty(value = "컨텐츠 작성자 id" ,required = true)
     private Long userId;

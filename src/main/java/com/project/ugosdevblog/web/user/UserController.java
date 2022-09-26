@@ -1,20 +1,22 @@
 package com.project.ugosdevblog.web.user;
 
+import com.project.ugosdevblog.web.common.FileSizeLimitException;
+import com.project.ugosdevblog.web.common.S3UploadFailedException;
 import com.project.ugosdevblog.web.user.dto.ChangePwdReq;
 import com.project.ugosdevblog.web.user.dto.FindPwdReq;
 import com.project.ugosdevblog.web.user.dto.UpdateUserReq;
-import com.project.ugosdevblog.web.user.dto.UserPostReq;
-import com.project.ugosdevblog.core.user.domain.User;
 import com.project.ugosdevblog.core.user.application.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.apache.tomcat.util.http.fileupload.impl.FileSizeLimitExceededException;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 
-import java.time.LocalDateTime;
+import java.io.IOException;
 
 @Api(value = "User API 정보를 제공하는 Controller")
 @RestController
@@ -22,7 +24,6 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
-    private final PasswordEncoder encoder;
 
     @ApiImplicitParams(value = {
             @ApiImplicitParam(name = "email" , value = "검증할 email 주소" ,required = true)
@@ -40,23 +41,38 @@ public class UserController {
         return userService.CheckDuplication(userId);
     }
 
-    @PostMapping("")
-    public void saveUser(@RequestBody UserPostReq reqData){
-        User user = User.builder()
-                .email(reqData.getEmail())
-                .password(encoder.encode(reqData.getPassword()))
-                .emailSubscribe(false)
-                .enabled(true)
-                .profileUrl(reqData.getProfile())
-                .username(reqData.getUserId())
-                .signUpAt(LocalDateTime.now())
+    @PostMapping(value = "",
+            consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
+            produces = MediaType.MULTIPART_FORM_DATA_VALUE
+    )
+    public void saveUser(
+            String userId,
+            String password,
+            String email,
+            MultipartFile profile
+    ) throws IOException {
+        UserFormData userFormData = UserFormData.builder()
+                .userId(userId)
+                .password(password)
+                .email(email)
+                .profile(profile)
                 .build();
-        userService.saveUser(user);
+        userService.saveUser(userFormData);
+        /**
+         * todo 컨텐츠 썸네일 , 유저 업데이트 이미지 로직 변경
+         * todo 주요 데이터 yml로 빼내기
+         */
     }
 
     @PutMapping("")
-    public void updateUser(@RequestBody UpdateUserReq reqData){
-        userService.updateUserInfo(reqData);
+    public void updateUser(UpdateUserReq reqData){
+        try {
+            userService.updateUserInfo(reqData);
+        }catch(FileSizeLimitExceededException e) {
+            throw new FileSizeLimitException();
+        }catch (IOException e) {
+            throw new S3UploadFailedException();
+        }
     }
 
 
@@ -76,7 +92,7 @@ public class UserController {
     }
     @PutMapping("/change-pwd")
     public void changePwd(@RequestBody ChangePwdReq reqData){
-        userService.changePwd(reqData.getUsername(),reqData.getPwd(),encoder);
+        userService.changePwd(reqData.getUsername(),reqData.getPwd());
     }
 }
 
