@@ -9,6 +9,7 @@ import com.project.ugosdevblog.core.auth.AuthRepository;
 import com.project.ugosdevblog.core.content.infra.MailCommand;
 import com.project.ugosdevblog.core.content.infra.MailSender;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -35,6 +36,9 @@ public class UserService implements UserDetailsService {
 
     private final S3ImageUploader imageUploader;
 
+    @Value("${app.sdk-host}")
+    private  String sdkHost;
+
     public boolean CheckDuplication(String userId){
         Optional<User> byUserId = userRepository.findByUsername(userId);
         return byUserId.isPresent();
@@ -42,9 +46,9 @@ public class UserService implements UserDetailsService {
     public void saveUser(UserFormData userFormData) throws IOException {
         MultipartFile profile = userFormData.getProfile();
         long timeStamp = System.currentTimeMillis();
-        String imageKey = timeStamp+profile.getOriginalFilename()+":profile";
+        String imageKey = timeStamp+":profile:"+profile.getOriginalFilename();
         imageUploader.upload(profile.getInputStream(),imageKey,profile.getContentType(),profile.getSize());
-        String profileUrl = "https://ugo-blog-image-bucket.s3.ap-northeast-2.amazonaws.com/"+imageKey;
+        String profileUrl = sdkHost+imageKey;
         User user = User.builder()
                 .email(userFormData.getEmail())
                 .password(encoder.encode(userFormData.getPassword()))
@@ -78,8 +82,9 @@ public class UserService implements UserDetailsService {
 
         MultipartFile profile = reqData.getProfile();
         long timeStamp = System.currentTimeMillis();
-        String imageKey = timeStamp+profile.getOriginalFilename()+":profile";
-        String profileUrl = "https://ugo-blog-image-bucket.s3.ap-northeast-2.amazonaws.com/"+imageKey;
+
+        String imageKey = timeStamp+":profile:"+profile.getOriginalFilename();
+        String profileUrl = sdkHost+imageKey;
         String imageNameToDelete = reqData.getImageUrlBeforeUpdate().substring(62);
 
         //이전 이미지 삭제

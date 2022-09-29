@@ -86,7 +86,7 @@ public class ContentManager implements ContentEditor,ContentFinder{
         List<String> tags = reqData.getTags();
         MultipartFile contentImg = reqData.getImage();
         long timeStamp = System.currentTimeMillis();
-        String imgKey = timeStamp+contentImg.getOriginalFilename()+":content";
+        String imgKey = timeStamp+":content:"+contentImg.getOriginalFilename();
         String host = "https://ugo-blog-image-bucket.s3.ap-northeast-2.amazonaws.com/";
         s3ImageUploader.upload(
                 contentImg.getInputStream(),
@@ -117,7 +117,7 @@ public class ContentManager implements ContentEditor,ContentFinder{
 
         MultipartFile image = reqData.getImage();
         long timeStamp = System.currentTimeMillis();
-        String updateImgKey = timeStamp+image.getOriginalFilename()+":content";
+        String updateImgKey = timeStamp+":content:"+image.getOriginalFilename();
         String host = "https://ugo-blog-image-bucket.s3.ap-northeast-2.amazonaws.com/";
         Optional<Content> contentOp = contentRepository.findById(id);
         Set<Tag> selectedTags = reqData.getTags().stream().map(

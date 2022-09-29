@@ -58,10 +58,6 @@ public class UserController {
                 .profile(profile)
                 .build();
         userService.saveUser(userFormData);
-        /**
-         * todo 컨텐츠 썸네일 , 유저 업데이트 이미지 로직 변경
-         * todo 주요 데이터 yml로 빼내기
-         */
     }
 
     @PutMapping("")

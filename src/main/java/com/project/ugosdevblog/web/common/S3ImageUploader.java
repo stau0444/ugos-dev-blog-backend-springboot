@@ -9,6 +9,7 @@ import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
@@ -19,30 +20,28 @@ public class S3ImageUploader {
     //Amazon-s3-sdk
     private AmazonS3 s3Client;
 
-    final private String ACCESS_KEY = "AKIAVHMSY34H33KIV25X";
-    final private String SECRET_KEY = "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";
-    private Regions clientRegion = Regions.AP_NORTHEAST_2;
-    private String bucket = "ugo-blog-image-bucket";
+    private final String accessKey;
 
-    private S3ImageUploader() {
+    private final String secretKey;
+    private final Regions clientRegion = Regions.AP_NORTHEAST_2;
+
+    private final String bucket;
+
+    private S3ImageUploader(
+            @Value("${app.sdk-bucket-name}") String bucket,
+            @Value("${app.sdk-secret-key}")String secretKey,
+            @Value("${app.sdk-access-key}")String accessKey
+    ) {
+        this.secretKey = secretKey;
+        this.accessKey = accessKey;
+        this.bucket = bucket;
         createS3Client();
-    }
-
-    //singleton pattern
-    static private S3ImageUploader instance = null;
-
-    public static S3ImageUploader getInstance() {
-        if (instance == null) {
-            return new S3ImageUploader();
-        } else {
-            return instance;
-        }
     }
 
     //aws S3 client 생성
     private void createS3Client() {
 
-        AWSCredentials credentials = new BasicAWSCredentials(ACCESS_KEY,SECRET_KEY);
+        AWSCredentials credentials = new BasicAWSCredentials(accessKey,secretKey);
 
         this.s3Client = AmazonS3ClientBuilder
                 .standard()
