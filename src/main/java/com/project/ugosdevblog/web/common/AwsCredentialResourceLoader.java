@@ -23,6 +23,7 @@ import java.util.stream.Collectors;
 @Component
 public class AwsCredentialResourceLoader {
 
+    //aws
     private String accessKey;
     private String secretKey;
     public Resource loadAwsCredential() {
