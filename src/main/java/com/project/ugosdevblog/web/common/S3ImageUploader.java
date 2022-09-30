@@ -6,7 +6,6 @@ import com.amazonaws.auth.*;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
-import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import org.springframework.beans.factory.annotation.Value;
@@ -24,17 +23,15 @@ public class S3ImageUploader {
 
     private final String secretKey;
     private final Regions clientRegion = Regions.AP_NORTHEAST_2;
-
     private final String bucket;
 
     private S3ImageUploader(
             @Value("${app.sdk-bucket-name}") String bucket,
-            @Value("${app.sdk-secret-key}")String secretKey,
-            @Value("${app.sdk-access-key}")String accessKey
-    ) {
-        this.secretKey = secretKey;
-        this.accessKey = accessKey;
+            AwsCredentialResourceLoader credentialResourceLoader) {
         this.bucket = bucket;
+        credentialResourceLoader.setKeys();
+        this.secretKey = credentialResourceLoader.getSecretKey();
+        this.accessKey = credentialResourceLoader.getAccessKey();
         createS3Client();
     }
 
