@@ -26,7 +26,7 @@ public class AwsCredentialResourceLoader {
     private String accessKey;
     private String secretKey;
     public Resource loadAwsCredential() {
-        return new FileSystemResource("/credential.yml");
+        return new FileSystemResource("/home/ubuntu/credential.yml");
     }
 
     public void setKeys(){
