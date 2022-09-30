@@ -39,6 +39,7 @@ public class UserService implements UserDetailsService {
     @Value("${app.sdk-host}")
     private  String sdkHost;
 
+
     public boolean CheckDuplication(String userId){
         Optional<User> byUserId = userRepository.findByUsername(userId);
         return byUserId.isPresent();
@@ -78,7 +79,7 @@ public class UserService implements UserDetailsService {
         );
     }
 
-    public void updateUserInfo(UpdateUserReq reqData) throws IOException {
+    public String updateUserInfo(UpdateUserReq reqData) throws IOException {
 
         MultipartFile profile = reqData.getProfile();
         long timeStamp = System.currentTimeMillis();
@@ -103,6 +104,7 @@ public class UserService implements UserDetailsService {
         user.setEmailSubscribe(reqData.isEmailSubscribe());
         user.setUpdateAt(LocalDateTime.now());
         user.setProfileUrl(profileUrl);
+        return profileUrl;
     }
 
     public void findUserId(String email) {

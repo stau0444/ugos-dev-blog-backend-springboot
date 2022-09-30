@@ -9,6 +9,7 @@ import com.project.ugosdevblog.web.common.security.filter.JWTLoginFilter;
 import com.project.ugosdevblog.core.token.application.TokenService;
 import com.project.ugosdevblog.core.user.application.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -34,6 +35,7 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
     private final CustomExceptionHandler exceptionHandler;
 
     private final JWTHelper.TokenVerifier tokenVerifier;
+
 
     @Bean
     public CustomAuthEntryPoint authenticationEntryPoint() {

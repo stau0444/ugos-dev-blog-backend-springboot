@@ -8,6 +8,7 @@ import com.project.ugosdevblog.core.user.domain.UserRepository;
 import com.project.ugosdevblog.web.common.S3ImageUploader;
 import com.project.ugosdevblog.web.content.dto.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -31,6 +32,9 @@ public class ContentManager implements ContentEditor,ContentFinder{
     private final MailSender mailSender;
 
     private final S3ImageUploader s3ImageUploader;
+
+    @Value("${app.sdk-host}")
+    private  String sdkHost;
 
     @Transactional(readOnly = true)
     public Page<ContentResp> getContents(String category, Pageable pageable){
@@ -87,7 +91,7 @@ public class ContentManager implements ContentEditor,ContentFinder{
         MultipartFile contentImg = reqData.getImage();
         long timeStamp = System.currentTimeMillis();
         String imgKey = timeStamp+":content:"+contentImg.getOriginalFilename();
-        String host = "https://ugo-blog-image-bucket.s3.ap-northeast-2.amazonaws.com/";
+        String host = sdkHost;
         s3ImageUploader.upload(
                 contentImg.getInputStream(),
                 imgKey,
@@ -118,7 +122,7 @@ public class ContentManager implements ContentEditor,ContentFinder{
         MultipartFile image = reqData.getImage();
         long timeStamp = System.currentTimeMillis();
         String updateImgKey = timeStamp+":content:"+image.getOriginalFilename();
-        String host = "https://ugo-blog-image-bucket.s3.ap-northeast-2.amazonaws.com/";
+        String host = sdkHost;
         Optional<Content> contentOp = contentRepository.findById(id);
         Set<Tag> selectedTags = reqData.getTags().stream().map(
                 tagRepository::findByTagName

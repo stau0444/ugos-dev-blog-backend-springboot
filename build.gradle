@@ -45,7 +45,7 @@ dependencies {
     implementation group: 'io.springfox', name: 'springfox-boot-starter', version: '3.0.0'
 
     //aws s3 sdk BOM
-    implementation platform('com.amazonaws:aws-java-sdk-bom:1.12.307')
+    implementation platform('com.amazonaws:aws-java-sdk-bom:1.11.1000')
 
     //aws s3 sdk
     implementation 'com.amazonaws:aws-java-sdk-s3'

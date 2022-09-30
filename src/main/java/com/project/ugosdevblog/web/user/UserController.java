@@ -61,14 +61,15 @@ public class UserController {
     }
 
     @PutMapping("")
-    public void updateUser(UpdateUserReq reqData){
+    public String updateUser(UpdateUserReq reqData){
         try {
-            userService.updateUserInfo(reqData);
+            return userService.updateUserInfo(reqData);
         }catch(FileSizeLimitExceededException e) {
             throw new FileSizeLimitException();
         }catch (IOException e) {
             throw new S3UploadFailedException();
         }
+
     }
 
 
