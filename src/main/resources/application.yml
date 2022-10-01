@@ -12,9 +12,4 @@ spring:
       - classpath:mail.yml
 server:
   port: 8080
-app:
-  sdk-host: https://ugo-blog-image-bucket.s3.ap-northeast-2.amazonaws.com/
-  sdk-access-key: AKIAVHMSY34H33KIV25X
-  sdk-secret-key: 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
-  sdk-bucket-name: ugo-blog-image-bucket
 
