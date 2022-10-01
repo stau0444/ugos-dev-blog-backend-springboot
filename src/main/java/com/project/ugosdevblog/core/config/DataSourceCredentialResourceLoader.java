@@ -14,17 +14,16 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Getter
-@Setter
 @Component
 public class DataSourceCredentialResourceLoader {
 
     private String username;
     private String password;
     private String url;
-    private String credentialPath;
+    private final String credentialPath;
 
     public DataSourceCredentialResourceLoader(
-            @Value("${db.credential-path}") String credentialPath
+            @Value("${db.credential-path}")String credentialPath
     ) {
         this.credentialPath = credentialPath;
     }
