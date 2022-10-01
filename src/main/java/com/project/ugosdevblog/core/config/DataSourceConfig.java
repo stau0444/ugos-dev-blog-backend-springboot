@@ -15,9 +15,15 @@ public class DataSourceConfig {
 
     private final  DataSourceCredentialResourceLoader credentialResourceLoader;
 
+    private final String username;
+    private final String password;
+    private final String dataSourceUrl;
     public DataSourceConfig(DataSourceCredentialResourceLoader credentialResourceLoader) {
         this.credentialResourceLoader = credentialResourceLoader;
         credentialResourceLoader.setCredential();
+        this.username = credentialResourceLoader.getUsername();
+        this.password = credentialResourceLoader.getPassword();
+        this.dataSourceUrl = credentialResourceLoader.getUrl();
     }
 
     @Profile("prod")
@@ -25,9 +31,9 @@ public class DataSourceConfig {
     public DataSource dataSourceProd(
     ){
         return DataSourceBuilder.create()
-                .username(credentialResourceLoader.getUsername())
-                .password(credentialResourceLoader.getPassword())
-                .url(credentialResourceLoader.getUrl())
+                .username(this.username)
+                .password(this.password)
+                .url(this.dataSourceUrl)
                 .driverClassName("org.mariadb.jdbc.Driver")
                 .build();
     }
