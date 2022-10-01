@@ -55,7 +55,7 @@
 
 ## 3.프로젝트 구조
 
-<img width="541" alt="스크린샷 2022-09-07 오후 11 17 31" src="https://user-images.githubusercontent.com/51349774/188903227-5014a683-320a-405c-a73f-ff51d5c7a12f.png">
+<img width="541" alt="프로젝트동작도" src="https://user-images.githubusercontent.com/51349774/193404346-a772a87f-30a1-4711-9431-eedc3351aa44.png">
 
 ---
 
