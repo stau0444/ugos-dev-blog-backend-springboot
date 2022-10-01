@@ -3,6 +3,7 @@ package com.project.ugosdevblog.web.common;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
@@ -26,8 +27,15 @@ public class AwsCredentialResourceLoader {
     //aws
     private String accessKey;
     private String secretKey;
+
+    private String credentialPath;
+    private AwsCredentialResourceLoader(
+            @Value("${app.credential-path}") String credentialPath
+    ){
+        this.credentialPath = credentialPath;
+    }
     public Resource loadAwsCredential() {
-        return new FileSystemResource("/home/ubuntu/credential.yml");
+        return new FileSystemResource(credentialPath);
     }
 
     public void setKeys(){

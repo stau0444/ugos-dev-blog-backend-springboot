@@ -1,4 +1,6 @@
 
+app:
+  db-credential-path: /Users/ugo/DBCredential.yml
 spring:
   jpa:
     hibernate:
@@ -7,15 +9,17 @@ spring:
       hibernate:
         default_batch_fetch_size: 100
     open-in-view: true
-  datasource:
-    url: jdbc:h2:tcp://localhost/~/ugosdevblog
-    username: sa
-    password:
-    driver-class-name: org.h2.Driver
+#  datasource:
+#    url: jdbc:h2:tcp://localhost/~/ugosdevblog
+#    username: sa
+#    password:
+#    driver-class-name: org.h2.Driver
   config:
     activate:
       on-profile: dev
 ---
+app:
+  db-credential-path: /home/ubuntu/DBCredential.yml
 spring:
   jpa:
     hibernate:
@@ -26,11 +30,11 @@ spring:
         format_sql: true
     show-sql: false
     database-platform: org.hibernate.dialect.MySQLDialect
-  datasource:
-    url: jdbc:mariadb://blogdb.cqg41lvwng6q.ap-northeast-2.rds.amazonaws.com/ugoblogdb
-    username: ugo
-    password: asdasd12!
-    driver-class-name: org.mariadb.jdbc.Driver
+#  datasource:
+#    url: jdbc:mariadb://blogdb.cqg41lvwng6q.ap-northeast-2.rds.amazonaws.com/ugoblogdb
+#    username: ugo
+#    password: asdasd12!
+#    driver-class-name: org.mariadb.jdbc.Driver
   config:
     activate:
       on-profile: prod
