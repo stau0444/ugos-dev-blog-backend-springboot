@@ -1,6 +1,4 @@
 
-app:
-  db-credential-path: /Users/ugo/DBCredential.yml
 spring:
   jpa:
     hibernate:
@@ -13,8 +11,7 @@ spring:
     activate:
       on-profile: dev
 ---
-app:
-  db-credential-path: /home/ubuntu/DBCredential.yml
+
 spring:
   jpa:
     hibernate:

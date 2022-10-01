@@ -24,7 +24,7 @@ public class DataSourceCredentialResourceLoader {
     private String credentialPath;
 
     public DataSourceCredentialResourceLoader(
-            @Value("${app.db-credential-path}") String credentialPath
+            @Value("${db.credential-path}") String credentialPath
     ) {
         this.credentialPath = credentialPath;
     }
@@ -50,7 +50,6 @@ public class DataSourceCredentialResourceLoader {
                 .collect(Collectors.toList());
         this.username = collect.get(0);
         this.password = collect.get(1);
-        String url = collect.get(2);
-        this.url = url.replace("\n", "");
+        this.url = collect.get(2).replace("\n", "");
     }
 }

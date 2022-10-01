@@ -13,5 +13,8 @@ spring:
       - classpath:aws.yml
 server:
   port: 8080
+db:
+  credential-path: /home/ubuntu/DBCredential.yml
+
 
 
