@@ -41,6 +41,13 @@ public class UserController {
         return userService.CheckDuplication(userId);
     }
 
+
+    @ApiImplicitParams(value = {
+            @ApiImplicitParam(name = "userid" , value = "유저 아이디" ,required = true),
+            @ApiImplicitParam(name = "password" , value = "유저 비밀번호" ,required = true),
+            @ApiImplicitParam(name = "email" , value = "유저 email" ,required = true),
+            @ApiImplicitParam(name = "profile" , value = "유저 profile image 파일" ,required = true)
+    })
     @PostMapping(value = "",
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
             produces = MediaType.MULTIPART_FORM_DATA_VALUE

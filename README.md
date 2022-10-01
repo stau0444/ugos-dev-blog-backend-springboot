@@ -31,7 +31,13 @@
 
 #### API Sever Domain
 
-####  https://www.ugosdevblog.com
+https://www.ugosdevblog.com
+
+#### swagger-ui 
+
+https://www.ugosdevblog.com/swagger-ui/
+
+(swagger-ui를 통해 api-spec을 확인할 수 있습니다.)
 
 ---
 
