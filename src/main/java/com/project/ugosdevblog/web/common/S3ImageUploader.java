@@ -64,7 +64,7 @@ public class S3ImageUploader {
 
         try {
             this.s3Client.putObject(putObjectRequest);
-            System.out.println(String.format("[%s] upload complete e", putObjectRequest.getKey()));
+            System.out.println(String.format("[%s] upload complete", putObjectRequest.getKey()));
 
         } catch (AmazonServiceException e) {
             e.printStackTrace();
