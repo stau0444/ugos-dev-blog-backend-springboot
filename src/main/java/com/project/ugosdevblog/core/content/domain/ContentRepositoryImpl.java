@@ -110,10 +110,12 @@ public class ContentRepositoryImpl implements  ContentRepositoryCustom{
         Tag selectedTag = queryFactory.selectFrom(tag).where(tag.tagName.eq(tagName)).fetchOne();
 
         QueryResults<Content> contentsByTag = queryFactory
-                .selectDistinct(content)
+                .select(content)
                 .from(content)
                 .orderBy(content.createdAt.desc())
                 .where(content.tags.contains(selectedTag))
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
                 .fetchResults();
 
         List<Content> results = contentsByTag.getResults();
