@@ -23,7 +23,7 @@ public class DataSourceCredentialResourceLoader {
     private final String credentialPath;
 
     public DataSourceCredentialResourceLoader(
-            @Value("${db.credential-path}")String credentialPath
+            @Value("${app.db.credential-path}")String credentialPath
     ) {
         this.credentialPath = credentialPath;
     }

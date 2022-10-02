@@ -1,7 +1,7 @@
 package com.project.ugosdevblog.core.user.application;
 
 import com.project.ugosdevblog.core.user.domain.*;
-import com.project.ugosdevblog.web.common.S3ImageUploader;
+import com.project.ugosdevblog.common.support.S3ImageUploader;
 import com.project.ugosdevblog.web.user.UserFormData;
 import com.project.ugosdevblog.web.user.dto.UpdateUserReq;
 import com.project.ugosdevblog.core.auth.UserAuthority;
@@ -36,7 +36,7 @@ public class UserService implements UserDetailsService {
 
     private final S3ImageUploader imageUploader;
 
-    @Value("${app.sdk-host}")
+    @Value("${app.aws.sdk-host}")
     private  String sdkHost;
 
 

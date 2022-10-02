@@ -1,4 +1,4 @@
-package com.project.ugosdevblog.web.common;
+package com.project.ugosdevblog.common.support;
 
 
 import lombok.Getter;
@@ -25,7 +25,7 @@ public class AwsCredentialResourceLoader {
 
     private String credentialPath;
     private AwsCredentialResourceLoader(
-            @Value("${app.credential-path}") String credentialPath
+            @Value("${app.aws.credential-path}") String credentialPath
     ){
         this.credentialPath = credentialPath;
     }

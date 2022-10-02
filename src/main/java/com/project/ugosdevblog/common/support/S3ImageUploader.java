@@ -1,4 +1,4 @@
-package com.project.ugosdevblog.web.common;
+package com.project.ugosdevblog.common.support;
 
 import com.amazonaws.AmazonServiceException;
 import com.amazonaws.SdkClientException;
@@ -8,6 +8,7 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.project.ugosdevblog.common.support.AwsCredentialResourceLoader;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -26,7 +27,7 @@ public class S3ImageUploader {
     private final String bucket;
 
     private S3ImageUploader(
-            @Value("${app.sdk-bucket-name}") String bucket,
+            @Value("${app.aws.sdk-bucket-name}") String bucket,
             AwsCredentialResourceLoader credentialResourceLoader) {
         this.bucket = bucket;
         credentialResourceLoader.setKeys();

@@ -1,7 +1,7 @@
 package com.project.ugosdevblog.web.user;
 
-import com.project.ugosdevblog.web.common.FileSizeLimitException;
-import com.project.ugosdevblog.web.common.S3UploadFailedException;
+import com.project.ugosdevblog.common.support.FileSizeLimitException;
+import com.project.ugosdevblog.common.support.S3UploadFailedException;
 import com.project.ugosdevblog.web.user.dto.ChangePwdReq;
 import com.project.ugosdevblog.web.user.dto.FindPwdReq;
 import com.project.ugosdevblog.web.user.dto.UpdateUserReq;

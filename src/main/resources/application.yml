@@ -12,11 +12,13 @@ spring:
       - classpath:mail.yml
 server:
   port: 8080
-db:
-  credential-path: /home/ubuntu/DBCredential.yml
+
 app:
-  credential-path: /home/ubuntu/credential.yml
-  sdk-host: https://ugo-blog-image-bucket.s3.ap-northeast-2.amazonaws.com/
-  sdk-bucket-name: ugo-blog-image-bucket
+  db:
+    credential-path: /home/ubuntu/DBCredential.yml
+  aws:
+    credential-path: /home/ubuntu/credential.yml
+    sdk-host: https://ugo-blog-image-bucket.s3.ap-northeast-2.amazonaws.com/
+    sdk-bucket-name: ugo-blog-image-bucket
 
 

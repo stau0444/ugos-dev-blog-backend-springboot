@@ -1,4 +1,4 @@
-package com.project.ugosdevblog.web.common;
+package com.project.ugosdevblog.common.support;
 
 public class FileSizeLimitException extends RuntimeException {
 

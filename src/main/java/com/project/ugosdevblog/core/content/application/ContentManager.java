@@ -1,11 +1,10 @@
 package com.project.ugosdevblog.core.content.application;
 
 import com.project.ugosdevblog.core.content.domain.*;
-import com.project.ugosdevblog.core.content.infra.MailCommand;
 import com.project.ugosdevblog.core.content.infra.MailSender;
 import com.project.ugosdevblog.core.content.infra.SubscribeUserMsgProps;
 import com.project.ugosdevblog.core.user.domain.UserRepository;
-import com.project.ugosdevblog.web.common.S3ImageUploader;
+import com.project.ugosdevblog.common.support.S3ImageUploader;
 import com.project.ugosdevblog.web.content.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -33,7 +32,7 @@ public class ContentManager implements ContentEditor,ContentFinder{
 
     private final S3ImageUploader s3ImageUploader;
 
-    @Value("${app.sdk-host}")
+    @Value("${app.aws.sdk-host}")
     private  String sdkHost;
 
     @Transactional(readOnly = true)
