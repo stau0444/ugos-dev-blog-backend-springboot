@@ -13,9 +13,9 @@ spring:
 server:
   port: 8080
 db:
-  credential-path: /Users/ugo/DBCredential.yml
+  credential-path: /home/ubuntu/DBCredential.yml
 app:
-  credential-path: /Users/ugo/credential.yml
+  credential-path: /home/ubuntu/credential.yml
   sdk-host: https://ugo-blog-image-bucket.s3.ap-northeast-2.amazonaws.com/
   sdk-bucket-name: ugo-blog-image-bucket
 
