@@ -68,7 +68,8 @@ https://www.ugosdevblog.com/swagger-ui/
 
 ## 4.ERD
 
-<img width="541" alt="스크린샷 2022-09-08 오전 1 07 01" src="https://user-images.githubusercontent.com/51349774/188929378-4e113a53-1a5b-4c8b-868f-87d6b6536b21.png">
+<img width="541" alt="스크린샷 2022-10-03 오후 11 32 56" src="https://user-images.githubusercontent.com/51349774/193603928-f0bdd9c7-ab0b-417f-b605-26df859a577d.png">
+
 
 ---
 
