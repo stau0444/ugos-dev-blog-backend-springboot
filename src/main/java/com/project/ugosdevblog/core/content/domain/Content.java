@@ -18,7 +18,7 @@ import java.util.Set;
 public class Content {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name="content_id")
     private Long contentId;
 

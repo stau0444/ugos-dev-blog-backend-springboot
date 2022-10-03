@@ -16,7 +16,7 @@ import javax.persistence.*;
 public class UserAuthority implements GrantedAuthority {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name = "user_id")
     private Long id;
 

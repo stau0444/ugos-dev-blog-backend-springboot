@@ -63,7 +63,7 @@ public class CommentManager implements CommentEditor,CommentFinder {
         commentRepository.save(comment);
     }
 
-//    @Transactional(readOnly = true)
+    @Transactional(readOnly = true)
     public List<CommentResp> getComments(Long id) {
         List<CommentDto> commentList = commentRepository.getComment(id);
         return commentList.stream().map((c) ->
