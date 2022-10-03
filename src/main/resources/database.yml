@@ -16,7 +16,6 @@ spring:
   jpa:
     hibernate:
       ddl-auto: validate
-      use-new-id-generator-mappings: false
     properties:
       hibernate:
         default_batch_fetch_size: 100
