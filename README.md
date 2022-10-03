@@ -25,7 +25,7 @@
 
 
 > 공부하는 것들을 정리해 놓을 수 있는 저만의 블로그를 만들어 보고 싶어 시작한 프로젝트입니다. `Spring-boot` 으로 만들어 졌으며 , 
-`Jenkins` (구축 서버) , `Docker` (배포 서버) 를 통해 CI/CD가 구현되어 있습니다.
+`Jenkins` (빌드 서버) , `Docker` (배포 서버) 를 통해 CI/CD가 구현되어 있습니다.
 기본적인 글 작성 , 삭제 , 수정 , 검색 ,  이미지 업로드 ,회원 가입  , 로그인/아웃 , 댓글 작성 기능들이 구현되어 있습니다.  
 
 
@@ -33,7 +33,7 @@
 
 https://www.ugosdevblog.com
 
-#### swagger-ui 
+#### Swagger-ui 
 
 https://www.ugosdevblog.com/swagger-ui/
 
@@ -46,14 +46,15 @@ https://www.ugosdevblog.com/swagger-ui/
 |                 | Back-end Stack                   |
 |-----------------|----------------------------------|  
 | Language        | `JAVA 11  `                        |
-| CI/CD           | `Jenkins` , `Docker`                 |
+| CI/CD           | `Jenkins 2.366` , `Docker` 20.10.17 |
 | Framwork        | `Spring-boot 2.4.2  `              |
 | Library         | `Spring-Security ,Spring-data-JPA` |
 | build Tool      | `gradle 6.6 `                      |
 | Web Container   | `Tomcat 9.0.41    `                |
 | Database        | `AWS RDS MariaDB 10.5.12`          |
 | Test DB         | `H2 Database`                      |
-| Cloud Instance  |` AWS EC2 Ubuntu Server  `          |
+| Build Server    |` AWS EC2 Ubuntu Server 22.04 LTS ` |
+| Deploy Server    |` AWS EC2 Ubuntu Server 20.04.5 LTS `|
 | Version Control | `Git , GitHub `                    |
 | etc             | `QueryDsl , Javax Mail , Lombock`  |
 
@@ -67,7 +68,10 @@ https://www.ugosdevblog.com/swagger-ui/
 
 ## 4.ERD
 
-<img width="541" alt="스크린샷 2022-09-08 오전 1 07 01" src="https://user-images.githubusercontent.com/51349774/188929378-4e113a53-1a5b-4c8b-868f-87d6b6536b21.png">
+
+<img width="541" alt="스크린샷 2022-10-03 오후 11 57 02" src="https://user-images.githubusercontent.com/51349774/193609285-d7ea512f-e442-44ed-9f84-45f2c46cd15b.png">
+
+
 
 ---
 
@@ -79,6 +83,10 @@ https://www.ugosdevblog.com/swagger-ui/
 - `Spring security`를 통한 인증 및 인가
 - `JPA를` 통한 연관관계 맵핑 , 쿼리 생성
 - `QueryDSL`을 사용한 동적 쿼리 생성(검색 , 페이징)
+- 블로그 글 작성 ,수정 , 삭제
+- 댓글 작성 수정 , 삭제
+- S3 이미지 업로드(user , content)  , 이미지 수정
+- RDS MariaDB 데이터 저장
 
 ---
 
