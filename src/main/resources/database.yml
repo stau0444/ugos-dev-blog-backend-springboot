@@ -24,4 +24,20 @@ spring:
     database-platform: org.hibernate.dialect.MySQLDialect
   config:
     activate:
-      on-profile: prod
+      on-profile: prod1
+
+---
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        default_batch_fetch_size: 100
+        format_sql: true
+    show-sql: false
+    database-platform: org.hibernate.dialect.MySQLDialect
+  config:
+    activate:
+      on-profile: prod2
+

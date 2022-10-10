@@ -23,7 +23,7 @@ public class DataSourceConfig {
         this.dataSourceUrl = credentialResourceLoader.getUrl();
     }
 
-    @Profile("prod")
+    @Profile({"prod1","prod2"})
     @Bean
     public DataSource dataSourceProd(
     ){
